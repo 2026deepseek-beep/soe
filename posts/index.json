@@ -1,0 +1,18 @@
+[
+  {
+    "slug": "tutorial-seo-2026",
+    "title": "Panduan SEO 2026 untuk Blogger Pemula",
+    "description": "Strategi SEO terbaru tahun 2026 yang wajib dikuasai setiap blogger agar artikel rangking di Google.",
+    "date": "2026-01-15",
+    "author": "Admin",
+    "tags": ["seo", "tutorial"]
+  },
+  {
+    "slug": "css-tanpa-cdn",
+    "title": "Mengapa CSS Tanpa CDN Lebih Cepat",
+    "description": "Perbandingan performa loading website menggunakan CDN vs CSS lokal. Bukti nyata dari Core Web Vitals.",
+    "date": "2026-01-10",
+    "author": "Admin",
+    "tags": ["css", "performance"]
+  }
+]

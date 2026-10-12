@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin CMS — Blog Saya</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .admin{max-width:900px;margin:40px auto;padding:0 20px}
+  .admin h1{margin-bottom:20px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-weight:600;margin-bottom:6px;font-size:.9rem}
+  .field input,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--fg);font-family:inherit;font-size:.95rem}
+  .field textarea{min-height:240px;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem}
+  .btn{background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.95rem;font-weight:600}
+  .btn:hover{opacity:.9}
+  .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+  .output{background:var(--card);border:1px solid var(--border);padding:16px;border-radius:8px;margin-top:20px;white-space:pre-wrap;font-family:ui-monospace,monospace;font-size:.85rem;max-height:400px;overflow:auto}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+  .hint{color:var(--muted);font-size:.85rem;margin-bottom:20px}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a href="/" class="logo">📝 Blog Saya</a>
+    <nav><a href="/">← Lihat Blog</a></nav>
+  </div>
+</header>
+
+<main class="admin">
+  <h1>🛠️ CMS Admin</h1>
+  <p class="hint">Isi form di bawah, klik <b>Generate</b>, lalu copy JSON ke folder <code>posts/</code> di repo GitHub Anda. Update juga <code>posts/index.json</code>.</p>
+
+  <div class="toolbar">
+    <button class="btn ghost" onclick="loadManifest()">📋 Load Manifest</button>
+    <button class="btn ghost" onclick="clearForm()">🆕 Form Baru</button>
+  </div>
+
+  <form id="postForm" onsubmit="generateJSON(event)">
+    <div class="field">
+      <label>Slug (URL)</label>
+      <input id="slug" required pattern="[a-z0-9-]+" placeholder="tutorial-seo-2026" oninput="autoSlug()">
+    </div>
+    <div class="field">
+      <label>Judul</label>
+      <input id="title" required placeholder="Judul artikel" oninput="autoSlugFromTitle()">
+    </div>
+    <div class="field">
+      <label>Deskripsi (Meta)</label>
+      <textarea id="description" required style="min-height:80px" placeholder="Deskripsi 120-160 karakter untuk SEO"></textarea>
+    </div>
+    <div class="field">
+      <label>Tanggal</label>
+      <input id="date" type="date" required>
+    </div>
+    <div class="field">
+      <label>Penulis</label>
+      <input id="author" value="Admin">
+    </div>
+    <div class="field">
+      <label>Tags (pisah dengan koma)</label>
+      <input id="tags" placeholder="seo, tutorial">
+    </div>
+    <div class="field">
+      <label>Konten (HTML)</label>
+      <textarea id="content" required placeholder="&lt;p&gt;Isi artikel...&lt;/p&gt;"></textarea>
+    </div>
+    <button type="submit" class="btn">⚡ Generate JSON</button>
+    <button type="button" class="btn ghost" onclick="copyOutput()">📋 Copy Output</button>
+  </form>
+
+  <div id="output" class="output" hidden></div>
+</main>
+
+<script>
+document.getElementById('date').valueAsDate = new Date();
+let slugLocked = false;
+
+function slugify(s){return s.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-')}
+function autoSlugFromTitle(){if(!slugLocked){document.getElementById('slug').value = slugify(document.getElementById('title').value)}}
+function autoSlug(){slugLocked = document.getElementById('slug').value.length > 0}
+function clearForm(){document.getElementById('postForm').reset();document.getElementById('date').valueAsDate=new Date();document.getElementById('author').value='Admin';slugLocked=false;document.getElementById('output').hidden=true}
+
+function generateJSON(e){
+  e.preventDefault();
+  const post = {
+    slug: document.getElementById('slug').value,
+    title: document.getElementById('title').value,
+    description: document.getElementById('description').value,
+    date: document.getElementById('date').value,
+    updated: document.getElementById('date').value,
+    author: document.getElementById('author').value,
+    tags: document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    content: document.getElementById('content').value
+  };
+  const out = document.getElementById('output');
+  out.hidden = false;
+  out.textContent = `// Simpan sebagai: posts/${post.slug}.json\n\n` + JSON.stringify(post, null, 2);
+}
+
+function copyOutput(){
+  const out = document.getElementById('output');
+  if(out.hidden) return alert('Generate dulu!');
+  navigator.clipboard.writeText(out.textContent.replace(/^\/\/.*\n\n/,''));
+  alert('✅ Tersalin!');
+}
+
+async function loadManifest(){
+  try{
+    const r = await fetch('posts/index.json');
+    const data = await r.json();
+    alert('📚 ' + data.length + ' artikel ditemukan:\n\n' + data.map(p=>`• ${p.title} (${p.slug})`).join('\n'));
+  }catch(e){alert('❌ Gagal: '+e.message)}
+}
+</script>
+</body>
+</html>
