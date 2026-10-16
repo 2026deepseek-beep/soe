@@ -6,56 +6,79 @@
 <title>Blog Saya — Artikel Teknologi & Tutorial</title>
 <meta name="description" content="Blog sederhana berisi artikel teknologi, tutorial coding, dan tips SEO untuk developer Indonesia.">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-<link rel="canonical" href="https://username.github.io/blog/">
+<meta name="author" content="Admin">
+<meta name="ai-content-declaration" content="human-written, editor-reviewed">
+<link rel="canonical" href="https://2026deepseek-beep.github.io/blog/">
+<link rel="alternate" type="application/json" href="feed.json" title="JSON Feed">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Blog Saya — Artikel Teknologi & Tutorial">
 <meta property="og:description" content="Blog sederhana berisi artikel teknologi, tutorial coding, dan tips SEO.">
-<meta property="og:url" content="https://username.github.io/blog/">
+<meta property="og:url" content="https://2026deepseek-beep.github.io/blog/">
+<meta property="og:locale" content="id_ID">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="assets/style.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'media',
+    theme: {
+      extend: {
+        colors: {
+          accent: { DEFAULT: '#2563eb', dark: '#60a5fa' }
+        }
+      }
+    }
+  }
+</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
   "@type":"Blog",
   "name":"Blog Saya",
-  "url":"https://username.github.io/blog/",
-  "description":"Artikel teknologi & tutorial"
+  "url":"https://2026deepseek-beep.github.io/blog/",
+  "description":"Artikel teknologi & tutorial",
+  "inLanguage":"id-ID",
+  "publisher":{"@type":"Organization","name":"Blog Saya"}
 }
 </script>
 </head>
 <body>
+
 <header class="site-header">
-  <div class="container">
+  <div class="container-blog flex justify-between items-center py-3.5">
     <a href="/" class="logo">📝 Blog Saya</a>
     <nav>
-      <a href="/">Home</a>
-      <a href="admin.html">Admin</a>
+      <a href="/" class="nav-link">Home</a>
+      <a href="admin.html" class="nav-link">Admin</a>
     </nav>
   </div>
 </header>
 
-<main class="container">
-  <section class="hero">
-    <h1>Artikel Terbaru</h1>
-    <p>Tutorial coding, tips SEO, dan teknologi web modern.</p>
+<main class="container-blog">
+  <section class="mt-10 mb-6">
+    <h1 class="hero-title">Artikel Terbaru</h1>
+    <p class="hero-sub">Tutorial coding, tips SEO, dan teknologi web modern.</p>
   </section>
 
-  <div id="search-box" class="search-box">
-    <input type="search" id="search" placeholder="🔍 Cari artikel..." aria-label="Cari artikel">
+  <div class="my-4 mb-7">
+    <input type="search" id="search" class="search-input" placeholder="🔍 Cari artikel..." aria-label="Cari artikel">
   </div>
 
-  <section id="posts" class="post-grid" aria-live="polite">
+  <section id="posts" class="grid gap-5 mb-16" aria-live="polite">
     <div class="loading">Memuat artikel...</div>
   </section>
 </main>
 
 <footer class="site-footer">
-  <div class="container">
+  <div class="container-blog">
     <p>&copy; <span id="year"></span> Blog Saya. Powered by GitHub Pages.</p>
   </div>
 </footer>
 
+<script src="assets/markdown.js" defer></script>
+<script src="assets/ai-seo.js" defer></script>
 <script src="assets/app.js" defer></script>
 </body>
 </html>

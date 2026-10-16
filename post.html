@@ -6,31 +6,39 @@
 <title>Memuat... — Blog Saya</title>
 <meta name="description" id="meta-desc" content="">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="author" content="Admin">
+<meta name="ai-content-declaration" content="human-written, editor-reviewed">
 <link rel="canonical" id="canonical" href="">
+<link rel="alternate" type="application/json" href="feed.json">
 <meta property="og:type" content="article">
 <meta property="og:title" id="og-title" content="">
 <meta property="og:description" id="og-desc" content="">
+<meta property="og:url" id="og-url" content="">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="assets/style.css">
-<script type="application/ld+json" id="article-schema"></script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
 </head>
 <body>
+
 <header class="site-header">
-  <div class="container">
+  <div class="container-blog flex justify-between items-center py-3.5">
     <a href="/" class="logo">📝 Blog Saya</a>
-    <nav><a href="/">← Kembali</a></nav>
+    <nav><a href="/" class="nav-link">← Kembali</a></nav>
   </div>
 </header>
 
-<main class="container">
-  <article id="article" class="article">
+<main class="container-blog">
+  <article id="article" class="my-10 mb-20">
     <div class="loading">Memuat artikel...</div>
   </article>
 </main>
 
 <footer class="site-footer">
-  <div class="container"><p>&copy; <span id="year"></span> Blog Saya.</p></div>
+  <div class="container-blog"><p>&copy; <span id="year"></span> Blog Saya.</p></div>
 </footer>
 
+<script src="assets/markdown.js" defer></script>
+<script src="assets/ai-seo.js" defer></script>
 <script src="assets/app.js" defer></script>
 </body>
 </html>
