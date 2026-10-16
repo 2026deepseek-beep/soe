@@ -1,0 +1,20 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "Blog Saya",
+  "home_page_url": "https://2026deepseek-beep.github.io/blog/",
+  "feed_url": "https://2026deepseek-beep.github.io/blog/feed.json",
+  "description": "Artikel teknologi & tutorial coding Bahasa Indonesia",
+  "language": "id-ID",
+  "authors": [{"name": "Admin"}],
+  "items": [
+    {
+      "id": "https://2026deepseek-beep.github.io/blog/post.html?slug=tutorial-seo-2026",
+      "url": "https://2026deepseek-beep.github.io/blog/post.html?slug=tutorial-seo-2026",
+      "title": "Panduan SEO 2026 untuk Blogger Pemula",
+      "summary": "Strategi SEO terbaru termasuk AI Search Optimization untuk rangking di Google AI Overview.",
+      "date_published": "2026-01-15T00:00:00+07:00",
+      "tags": ["seo", "tutorial", "ai-search"],
+      "author": {"name": "Admin"}
+    }
+  ]
+}

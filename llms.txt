@@ -1,0 +1,19 @@
+# Blog Saya
+
+> Blog sederhana berisi artikel teknologi, tutorial coding, tips SEO, dan panduan developer Indonesia. Konten ditulis dalam Bahasa Indonesia dengan fokus pada praktik terbaik web modern 2026.
+
+## About
+- Author: Admin
+- Language: id-ID
+- Contact: admin@example.com
+- License: CC BY 4.0
+
+## Articles
+
+- [Panduan SEO 2026 untuk Blogger Pemula](https://2026deepseek-beep.github.io/blog/post.html?slug=tutorial-seo-2026): Strategi SEO terbaru termasuk AI Search Optimization (AEO/GEO) untuk rangking di Google AI Overview dan ChatGPT.
+- [Mengapa CSS Tanpa CDN Lebih Cepat](https://2026deepseek-beep.github.io/blog/post.html?slug=css-tanpa-cdn): Perbandingan performa loading website menggunakan CDN vs CSS lokal berdasarkan Core Web Vitals.
+
+## Optional
+- [Sitemap](https://2026deepseek-beep.github.io/blog/sitemap.xml)
+- [JSON Feed](https://2026deepseek-beep.github.io/blog/feed.json)
+- [Full Content](https://2026deepseek-beep.github.io/blog/llms-full.txt)

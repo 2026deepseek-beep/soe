@@ -7,112 +7,362 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="assets/style.css">
 <style>
-  .admin{max-width:900px;margin:40px auto;padding:0 20px}
-  .admin h1{margin-bottom:20px}
-  .field{margin-bottom:16px}
-  .field label{display:block;font-weight:600;margin-bottom:6px;font-size:.9rem}
-  .field input,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--fg);font-family:inherit;font-size:.95rem}
-  .field textarea{min-height:240px;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem}
-  .btn{background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.95rem;font-weight:600}
+  .admin{max-width:1200px;margin:30px auto;padding:0 20px}
+  .admin h1{margin-bottom:8px}
+  .hint{color:var(--muted);font-size:.88rem;margin-bottom:20px}
+  .tabs{display:flex;gap:6px;border-bottom:2px solid var(--border);margin-bottom:20px;flex-wrap:wrap}
+  .tab{padding:10px 16px;cursor:pointer;border:none;background:none;color:var(--muted);font-size:.9rem;font-weight:600;border-bottom:2px solid transparent;margin-bottom:-2px}
+  .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .panel{display:none}
+  .panel.active{display:block}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-weight:600;margin-bottom:5px;font-size:.85rem;color:var(--fg)}
+  .field input,.field textarea,.field select{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--fg);font-family:inherit;font-size:.92rem}
+  .field textarea{min-height:420px;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem;line-height:1.6}
+  .field textarea.short{min-height:70px}
+  .preview{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;min-height:420px;max-height:600px;overflow:auto}
+  .preview h1{font-size:1.5rem;margin:16px 0 8px}
+  .preview h2{font-size:1.25rem;margin:20px 0 8px}
+  .preview h3{font-size:1.1rem;margin:16px 0 6px}
+  .preview p{margin-bottom:12px}
+  .preview ul,.preview ol{margin:0 0 12px 22px}
+  .preview code{background:var(--bg);padding:2px 5px;border-radius:4px;font-size:.88em}
+  .preview pre{background:var(--bg);padding:12px;border-radius:8px;overflow-x:auto;margin:12px 0}
+  .preview pre code{background:none;padding:0}
+  .preview blockquote{border-left:3px solid var(--accent);padding:6px 14px;margin:12px 0;color:var(--muted)}
+  .preview table{border-collapse:collapse;width:100%;margin:12px 0}
+  .preview th,.preview td{border:1px solid var(--border);padding:6px 10px;text-align:left}
+  .preview img{max-width:100%;border-radius:8px}
+  .toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+  .toolbar button{padding:5px 10px;font-size:.8rem;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:inherit}
+  .toolbar button:hover{border-color:var(--accent);color:var(--accent)}
+  .btn{background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.92rem;font-weight:600;font-family:inherit}
   .btn:hover{opacity:.9}
   .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
-  .output{background:var(--card);border:1px solid var(--border);padding:16px;border-radius:8px;margin-top:20px;white-space:pre-wrap;font-family:ui-monospace,monospace;font-size:.85rem;max-height:400px;overflow:auto}
-  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-  .hint{color:var(--muted);font-size:.85rem;margin-bottom:20px}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  .output{background:var(--card);border:1px solid var(--border);padding:16px;border-radius:8px;margin-top:20px;white-space:pre-wrap;font-family:ui-monospace,monospace;font-size:.82rem;max-height:400px;overflow:auto;position:relative}
+  .output .copy{position:absolute;top:8px;right:8px;font-size:.75rem;padding:4px 10px}
+  .ai-badge{display:inline-block;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:.7rem;padding:2px 8px;border-radius:99px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-left:8px}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:16px}
+  .stat{background:var(--card);border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
+  .stat b{display:block;font-size:1.4rem;color:var(--accent)}
+  .stat span{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
 </style>
 </head>
 <body>
 <header class="site-header">
-  <div class="container">
+  <div class="container" style="max-width:1200px">
     <a href="/" class="logo">📝 Blog Saya</a>
     <nav><a href="/">← Lihat Blog</a></nav>
   </div>
 </header>
 
 <main class="admin">
-  <h1>🛠️ CMS Admin</h1>
-  <p class="hint">Isi form di bawah, klik <b>Generate</b>, lalu copy JSON ke folder <code>posts/</code> di repo GitHub Anda. Update juga <code>posts/index.json</code>.</p>
+  <h1>🛠️ CMS Admin <span class="ai-badge">AI SEO Ready</span></h1>
+  <p class="hint">Tulis artikel pakai <b>Markdown</b>. Sistem otomatis generate JSON, FAQ Schema, HowTo Schema, dan AI-friendly summary.</p>
 
-  <div class="toolbar">
-    <button class="btn ghost" onclick="loadManifest()">📋 Load Manifest</button>
-    <button class="btn ghost" onclick="clearForm()">🆕 Form Baru</button>
+  <div class="tabs">
+    <button class="tab active" data-panel="editor">✍️ Editor</button>
+    <button class="tab" data-panel="meta">🔍 SEO Meta</button>
+    <button class="tab" data-panel="output">📦 Output JSON</button>
+    <button class="tab" data-panel="files">📁 Files Tambahan</button>
   </div>
 
-  <form id="postForm" onsubmit="generateJSON(event)">
-    <div class="field">
-      <label>Slug (URL)</label>
-      <input id="slug" required pattern="[a-z0-9-]+" placeholder="tutorial-seo-2026" oninput="autoSlug()">
-    </div>
-    <div class="field">
-      <label>Judul</label>
-      <input id="title" required placeholder="Judul artikel" oninput="autoSlugFromTitle()">
-    </div>
-    <div class="field">
-      <label>Deskripsi (Meta)</label>
-      <textarea id="description" required style="min-height:80px" placeholder="Deskripsi 120-160 karakter untuk SEO"></textarea>
-    </div>
-    <div class="field">
-      <label>Tanggal</label>
-      <input id="date" type="date" required>
-    </div>
-    <div class="field">
-      <label>Penulis</label>
-      <input id="author" value="Admin">
-    </div>
-    <div class="field">
-      <label>Tags (pisah dengan koma)</label>
-      <input id="tags" placeholder="seo, tutorial">
-    </div>
-    <div class="field">
-      <label>Konten (HTML)</label>
-      <textarea id="content" required placeholder="&lt;p&gt;Isi artikel...&lt;/p&gt;"></textarea>
-    </div>
-    <button type="submit" class="btn">⚡ Generate JSON</button>
-    <button type="button" class="btn ghost" onclick="copyOutput()">📋 Copy Output</button>
-  </form>
+  <!-- EDITOR -->
+  <div class="panel active" id="panel-editor">
+    <div class="grid2">
+      <div>
+        <div class="toolbar">
+          <button type="button" onclick="wrap('**','**')"><b>B</b></button>
+          <button type="button" onclick="wrap('*','*')"><i>I</i></button>
+          <button type="button" onclick="wrap('~~','~~')"><s>S</s></button>
+          <button type="button" onclick="wrap('`','`')">&lt;/&gt;</button>
+          <button type="button" onclick="prefix('## ')">H2</button>
+          <button type="button" onclick="prefix('### ')">H3</button>
+          <button type="button" onclick="prefix('- ')">• List</button>
+          <button type="button" onclick="prefix('1. ')">1. List</button>
+          <button type="button" onclick="prefix('> ')">❝ Quote</button>
+          <button type="button" onclick="insert('[](https://)')">🔗 Link</button>
+          <button type="button" onclick="insert('![](https://)')">🖼️ Img</button>
+          <button type="button" onclick="insert('\n```\ncode\n```\n')">📄 Code</button>
+          <button type="button" onclick="insert('\n| Kolom | Kolom |\n|-------|-------|\n| isi   | isi   |\n')">📊 Tabel</button>
+        </div>
+        <div class="field">
+          <textarea id="content" placeholder="# Judul Artikel
 
-  <div id="output" class="output" hidden></div>
+Tulis konten pakai **Markdown** di sini...
+
+## 1. Langkah Pertama
+Penjelasan langkah...
+
+## Apa itu SEO AI?
+Jawaban singkat yang bisa dikutip AI.
+
+> Kutipan penting
+" oninput="renderPreview(); updateStats()"></textarea>
+        </div>
+        <div class="stat-grid" id="stats">
+          <div class="stat"><b id="stat-words">0</b><span>Kata</span></div>
+          <div class="stat"><b id="stat-read">0</b><span>Menit Baca</span></div>
+          <div class="stat"><b id="stat-faq">0</b><span>FAQ</span></div>
+          <div class="stat"><b id="stat-steps">0</b><span>HowTo Steps</span></div>
+        </div>
+      </div>
+      <div>
+        <label style="font-weight:600;font-size:.85rem;display:block;margin-bottom:5px">👁️ Preview</label>
+        <div class="preview" id="preview"><p style="color:var(--muted)">Preview akan muncul di sini...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- META -->
+  <div class="panel" id="panel-meta">
+    <div class="grid2">
+      <div>
+        <div class="field">
+          <label>Slug URL</label>
+          <input id="slug" required pattern="[a-z0-9-]+" placeholder="tutorial-seo-2026">
+        </div>
+        <div class="field">
+          <label>Judul</label>
+          <input id="title" required placeholder="Judul artikel">
+        </div>
+        <div class="field">
+          <label>Meta Description (120-160 char)</label>
+          <textarea id="description" class="short" required placeholder="Deskripsi untuk SEO..."></textarea>
+          <small id="desc-count" style="color:var(--muted);font-size:.78rem">0 / 160</small>
+        </div>
+        <div class="field">
+          <label>AI Summary (opsional — auto jika kosong)</label>
+          <textarea id="aiSummary" class="short" placeholder="Ringkasan 1-2 kalimat untuk AI Overview..."></textarea>
+        </div>
+      </div>
+      <div>
+        <div class="field">
+          <label>Tanggal</label>
+          <input id="date" type="date" required>
+        </div>
+        <div class="field">
+          <label>Penulis</label>
+          <input id="author" value="Admin">
+        </div>
+        <div class="field">
+          <label>Tags (pisah koma)</label>
+          <input id="tags" placeholder="seo, tutorial, ai-search">
+        </div>
+        <div class="field">
+          <label>Bahasa</label>
+          <select id="lang">
+            <option value="id-ID" selected>Bahasa Indonesia</option>
+            <option value="en-US">English</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Kategori</label>
+          <input id="category" placeholder="Tutorial" value="Tutorial">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="panel" id="panel-output">
+    <div class="actions">
+      <button class="btn" onclick="generatePost()">⚡ Generate JSON Artikel</button>
+      <button class="btn ghost" onclick="generateManifest()">📋 Update index.json</button>
+      <button class="btn ghost" onclick="generateLLMsTxt()">🤖 Generate llms.txt</button>
+      <button class="btn ghost" onclick="generateLLMsFull()">📚 Generate llms-full.txt</button>
+      <button class="btn ghost" onclick="generateFeed()">📡 Generate feed.json</button>
+      <button class="btn ghost" onclick="generateSitemap()">🗺️ Generate sitemap.xml</button>
+    </div>
+    <div id="output" class="output" hidden></div>
+  </div>
+
+  <!-- FILES -->
+  <div class="panel" id="panel-files">
+    <p class="hint">File-file berikut wajib ada di root repo untuk SEO AI maksimal:</p>
+    <ul style="line-height:2;margin-left:20px">
+      <li><code>llms.txt</code> — Standar AI crawler (WAJIB 2026)</li>
+      <li><code>llms-full.txt</code> — Konten lengkap untuk AI</li>
+      <li><code>feed.json</code> — JSON Feed untuk AI aggregator</li>
+      <li><code>robots.txt</code> — Allow eksplisit GPTBot, PerplexityBot, ClaudeBot</li>
+      <li><code>sitemap.xml</code> — Untuk Google Search Console</li>
+    </ul>
+  </div>
 </main>
 
+<script src="assets/markdown.js"></script>
+<script src="assets/ai-seo.js"></script>
 <script>
-document.getElementById('date').valueAsDate = new Date();
-let slugLocked = false;
+const $ = id => document.getElementById(id);
+$('date').valueAsDate = new Date();
 
-function slugify(s){return s.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-')}
-function autoSlugFromTitle(){if(!slugLocked){document.getElementById('slug').value = slugify(document.getElementById('title').value)}}
-function autoSlug(){slugLocked = document.getElementById('slug').value.length > 0}
-function clearForm(){document.getElementById('postForm').reset();document.getElementById('date').valueAsDate=new Date();document.getElementById('author').value='Admin';slugLocked=false;document.getElementById('output').hidden=true}
+// Tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    $('panel-' + tab.dataset.panel).classList.add('active');
+  });
+});
 
-function generateJSON(e){
-  e.preventDefault();
-  const post = {
-    slug: document.getElementById('slug').value,
-    title: document.getElementById('title').value,
-    description: document.getElementById('description').value,
-    date: document.getElementById('date').value,
-    updated: document.getElementById('date').value,
-    author: document.getElementById('author').value,
-    tags: document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-    content: document.getElementById('content').value
-  };
-  const out = document.getElementById('output');
+// Toolbar helpers
+function wrap(before, after) {
+  const ta = $('content');
+  const s = ta.selectionStart, e = ta.selectionEnd;
+  const sel = ta.value.slice(s, e) || 'teks';
+  ta.value = ta.value.slice(0, s) + before + sel + after + ta.value.slice(e);
+  ta.focus();
+  ta.setSelectionRange(s + before.length, s + before.length + sel.length);
+  renderPreview(); updateStats();
+}
+function prefix(p) {
+  const ta = $('content');
+  const s = ta.selectionStart;
+  const lineStart = ta.value.lastIndexOf('\n', s - 1) + 1;
+  ta.value = ta.value.slice(0, lineStart) + p + ta.value.slice(lineStart);
+  ta.focus();
+  renderPreview(); updateStats();
+}
+function insert(text) {
+  const ta = $('content');
+  const s = ta.selectionStart;
+  ta.value = ta.value.slice(0, s) + text + ta.value.slice(ta.selectionEnd);
+  ta.focus();
+  renderPreview(); updateStats();
+}
+
+// Preview + stats
+function renderPreview() {
+  const md = $('content').value;
+  $('preview').innerHTML = md.trim()
+    ? MD.parse(md)
+    : '<p style="color:var(--muted)">Preview akan muncul di sini...</p>';
+}
+function updateStats() {
+  const md = $('content').value;
+  $('stat-words').textContent = AISEO.stripMd(md).split(/\s+/).filter(Boolean).length;
+  $('stat-read').textContent = AISEO.readingTime(md);
+  $('stat-faq').textContent = AISEO.extractFAQs(md).length;
+  $('stat-steps').textContent = (AISEO.extractSteps(md) || []).length;
+}
+$('description').addEventListener('input', e => {
+  $('desc-count').textContent = `${e.target.value.length} / 160`;
+});
+
+// Generators
+function showOutput(label, content) {
+  const out = $('output');
   out.hidden = false;
-  out.textContent = `// Simpan sebagai: posts/${post.slug}.json\n\n` + JSON.stringify(post, null, 2);
+  out.textContent = `// ${label}\n\n${content}`;
+  // Copy button
+  if (!out.querySelector('.copy')) {
+    const btn = document.createElement('button');
+    btn.className = 'btn ghost copy';
+    btn.textContent = '📋 Copy';
+    btn.onclick = () => {
+      navigator.clipboard.writeText(out.textContent.replace(/^\/\/.*\n\n/, ''));
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 1500);
+    };
+    out.appendChild(btn);
+  }
 }
 
-function copyOutput(){
-  const out = document.getElementById('output');
-  if(out.hidden) return alert('Generate dulu!');
-  navigator.clipboard.writeText(out.textContent.replace(/^\/\/.*\n\n/,''));
-  alert('✅ Tersalin!');
+function gather() {
+  const md = $('content').value;
+  return {
+    slug: $('slug').value || 'untitled-' + Date.now(),
+    title: $('title').value || 'Tanpa Judul',
+    description: $('description').value,
+    aiSummary: $('aiSummary').value || AISEO.summary(md),
+    date: $('date').value,
+    updated: $('date').value,
+    author: $('author').value,
+    tags: $('tags').value.split(',').map(t => t.trim()).filter(Boolean),
+    category: $('category').value,
+    lang: $('lang').value,
+    content: md,
+    faqs: AISEO.extractFAQs(md),
+    steps: AISEO.extractSteps(md),
+    readingTime: AISEO.readingTime(md),
+    wordCount: AISEO.stripMd(md).split(/\s+/).filter(Boolean).length
+  };
 }
 
-async function loadManifest(){
-  try{
-    const r = await fetch('posts/index.json');
-    const data = await r.json();
-    alert('📚 ' + data.length + ' artikel ditemukan:\n\n' + data.map(p=>`• ${p.title} (${p.slug})`).join('\n'));
-  }catch(e){alert('❌ Gagal: '+e.message)}
+function generatePost() {
+  const p = gather();
+  showOutput(`Simpan sebagai: posts/${p.slug}.json`, JSON.stringify(p, null, 2));
+}
+
+function generateManifest() {
+  const p = gather();
+  const entry = {
+    slug: p.slug, title: p.title, description: p.description,
+    aiSummary: p.aiSummary, date: p.date, author: p.author,
+    tags: p.tags, category: p.category, readingTime: p.readingTime
+  };
+  showOutput(`Update posts/index.json — tambahkan entry ini`,
+    JSON.stringify(entry, null, 2));
+}
+
+function generateLLMsTxt() {
+  const p = gather();
+  const url = `https://2026deepseek-beep.github.io/blog/post.html?slug=${p.slug}`;
+  const txt = `# Blog Saya
+
+> Blog sederhana berisi artikel teknologi, tutorial coding, tips SEO, dan panduan developer Indonesia.
+
+## Articles
+
+- [${p.title}](${url}): ${p.aiSummary}
+`;
+  showOutput(`Tambahkan ke llms.txt`, txt);
+}
+
+function generateLLMsFull() {
+  const p = gather();
+  const url = `https://2026deepseek-beep.github.io/blog/post.html?slug=${p.slug}`;
+  const txt = `## ${p.title}
+
+URL: ${url}
+Tanggal: ${p.date}
+Author: ${p.author}
+Tags: ${p.tags.join(', ')}
+
+${AISEO.stripMd(p.content)}
+
+---
+`;
+  showOutput(`Tambahkan ke llms-full.txt`, txt);
+}
+
+function generateFeed() {
+  const p = gather();
+  const item = {
+    id: `https://2026deepseek-beep.github.io/blog/post.html?slug=${p.slug}`,
+    url: `https://2026deepseek-beep.github.io/blog/post.html?slug=${p.slug}`,
+    title: p.title,
+    summary: p.aiSummary,
+    date_published: new Date(p.date).toISOString(),
+    tags: p.tags,
+    author: {name: p.author}
+  };
+  showOutput(`Tambahkan ke feed.json (items[])`, JSON.stringify(item, null, 2));
+}
+
+function generateSitemap() {
+  const p = gather();
+  const entry = `  <url>
+    <loc>https://2026deepseek-beep.github.io/blog/post.html?slug=${p.slug}</loc>
+    <lastmod>${p.updated}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+  showOutput(`Tambahkan ke sitemap.xml`, entry);
 }
 </script>
 </body>
