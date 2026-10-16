@@ -77,10 +77,10 @@
 
       const canonicalURL = `${location.origin}${location.pathname}?slug=${slug}`;
       document.title = `${post.title} — Blog Saya`;
-      $('meta-desc').setAttribute('content', post.description);
-      $('canonical').setAttribute('href', canonicalURL);
-      $('og-title').setAttribute('content', post.title);
-      $('og-desc').setAttribute('content', post.description);
+      $('meta-desc')?.setAttribute('content', post.description);
+      $('canonical')?.setAttribute('href', canonicalURL);
+      $('og-title')?.setAttribute('content', post.title);
+      $('og-desc')?.setAttribute('content', post.description);
       $('og-url')?.setAttribute('content', canonicalURL);
 
       let kw = document.querySelector('meta[name="keywords"]');

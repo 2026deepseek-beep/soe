@@ -5,28 +5,17 @@
 <title>404 — Halaman Tidak Ditemukan</title>
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="assets/style.css">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    darkMode: 'media',
-    theme: {
-      extend: {
-        colors: {
-          accent: { DEFAULT: '#2563eb', dark: '#60a5fa' }
-        }
-      }
-    }
-  }
-</script>
 </head>
 <body>
 <header class="site-header">
-  <div class="container"><a href="/" class="logo">📝 Blog Saya</a></div>
+  <div class="container-blog flex justify-between items-center py-3.5">
+    <a href="/" class="logo">📝 Blog Saya</a>
+  </div>
 </header>
-<main class="container" style="text-align:center;padding:80px 20px">
-  <h1 style="font-size:4rem">404</h1>
-  <p style="color:var(--muted);margin:16px 0 24px">Halaman yang Anda cari tidak ditemukan.</p>
-  <a href="/" class="btn" style="background:var(--accent);color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none">← Kembali ke Home</a>
+<main class="container-blog text-center py-20">
+  <h1 class="text-6xl font-bold mb-4">404</h1>
+  <p class="text-slate-500 dark:text-slate-400 mb-6">Halaman yang Anda cari tidak ditemukan.</p>
+  <a href="/" class="btn">← Kembali ke Home</a>
 </main>
 </body>
 </html>

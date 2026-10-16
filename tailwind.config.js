@@ -14,11 +14,9 @@ module.exports = {
       colors: {
         accent: {
           DEFAULT: '#2563eb',
-          dark: '#60a5fa',
-          ai: '#8b5cf6'
+          dark: '#60a5fa'
         }
-      },
-      typography: null
+      }
     }
   },
   plugins: []

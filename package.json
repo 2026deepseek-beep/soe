@@ -1,11 +1,11 @@
 {
-  "name": "blog-cms",
+  "name": "blog-cms-ai-seo",
   "version": "3.0.0",
   "private": true,
+  "description": "Blog CMS sederhana dengan Tailwind CSS + AI SEO untuk GitHub Pages",
   "scripts": {
     "build": "tailwindcss -i ./src/input.css -o ./assets/style.css --minify",
-    "watch": "tailwindcss -i ./src/input.css -o ./assets/style.css --watch",
-    "dev": "npm run watch"
+    "watch": "tailwindcss -i ./src/input.css -o ./assets/style.css --watch"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.17"

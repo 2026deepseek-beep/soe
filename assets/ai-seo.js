@@ -1,10 +1,8 @@
-// AI SEO Helper — generator schema, FAQ, HowTo, Speakable
 window.AISEO = (() => {
   'use strict';
 
   const abs = (path) => new URL(path, location.origin + location.pathname.replace(/\/[^/]*$/, '/')).href;
 
-  // BlogPosting schema lengkap (AI-friendly)
   function articleSchema(post, slug) {
     return {
       "@context": "https://schema.org",
@@ -14,28 +12,23 @@ window.AISEO = (() => {
       "abstract": post.description,
       "articleBody": stripMd(post.content).slice(0, 5000),
       "wordCount": stripMd(post.content).split(/\s+/).length,
-      "inLanguage": "id-ID",
+      "inLanguage": post.lang || "id-ID",
       "datePublished": post.date,
       "dateModified": post.updated || post.date,
       "author": {
         "@type": "Person",
-        "name": post.author || "Admin",
-        "url": location.origin
+        "name": post.author || "Admin"
       },
       "publisher": {
         "@type": "Organization",
-        "name": "Blog Saya",
-        "logo": {
-          "@type": "ImageObject",
-          "url": abs("assets/logo.png")
-        }
+        "name": "Blog Saya"
       },
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": abs(`post.html?slug=${slug}`)
       },
       "keywords": (post.tags || []).join(", "),
-      "articleSection": (post.tags && post.tags[0]) || "Umum",
+      "articleSection": post.category || (post.tags && post.tags[0]) || "Umum",
       "isAccessibleForFree": true,
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "speakable": {
@@ -45,7 +38,6 @@ window.AISEO = (() => {
     };
   }
 
-  // FAQ Schema — sangat disukai AI Overview & Perplexity
   function faqSchema(faqs) {
     if (!faqs || !faqs.length) return null;
     return {
@@ -59,7 +51,6 @@ window.AISEO = (() => {
     };
   }
 
-  // HowTo Schema
   function howToSchema(post, steps) {
     if (!steps || !steps.length) return null;
     return {
@@ -76,7 +67,6 @@ window.AISEO = (() => {
     };
   }
 
-  // Breadcrumb
   function breadcrumbSchema(post, slug) {
     return {
       "@context": "https://schema.org",
@@ -88,7 +78,6 @@ window.AISEO = (() => {
     };
   }
 
-  // Auto-generate FAQ dari heading "?" di markdown
   function extractFAQs(md) {
     const faqs = [];
     const lines = md.split('\n');
@@ -106,7 +95,6 @@ window.AISEO = (() => {
     return faqs;
   }
 
-  // Auto-generate HowTo dari heading bernomor "## 1. ..."
   function extractSteps(md) {
     const steps = [];
     const lines = md.split('\n');
@@ -135,7 +123,6 @@ window.AISEO = (() => {
       .trim();
   }
 
-  // Ringkasan AI — 2 kalimat pertama untuk "TL;DR" & snippet AI
   function summary(md, maxLen = 260) {
     const text = stripMd(md);
     if (text.length <= maxLen) return text;
@@ -144,7 +131,6 @@ window.AISEO = (() => {
     return (lastDot > 100 ? cut.slice(0, lastDot + 1) : cut + '...');
   }
 
-  // Reading time
   function readingTime(md) {
     const words = stripMd(md).split(/\s+/).length;
     return Math.max(1, Math.round(words / 200));
