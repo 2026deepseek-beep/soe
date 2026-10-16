@@ -6,50 +6,19 @@
 <title>Admin CMS — Blog Saya</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="assets/style.css">
-<style>
-  .admin{max-width:1200px;margin:30px auto;padding:0 20px}
-  .admin h1{margin-bottom:8px}
-  .hint{color:var(--muted);font-size:.88rem;margin-bottom:20px}
-  .tabs{display:flex;gap:6px;border-bottom:2px solid var(--border);margin-bottom:20px;flex-wrap:wrap}
-  .tab{padding:10px 16px;cursor:pointer;border:none;background:none;color:var(--muted);font-size:.9rem;font-weight:600;border-bottom:2px solid transparent;margin-bottom:-2px}
-  .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
-  .panel{display:none}
-  .panel.active{display:block}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-  @media(max-width:900px){.grid2{grid-template-columns:1fr}}
-  .field{margin-bottom:14px}
-  .field label{display:block;font-weight:600;margin-bottom:5px;font-size:.85rem;color:var(--fg)}
-  .field input,.field textarea,.field select{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--fg);font-family:inherit;font-size:.92rem}
-  .field textarea{min-height:420px;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem;line-height:1.6}
-  .field textarea.short{min-height:70px}
-  .preview{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;min-height:420px;max-height:600px;overflow:auto}
-  .preview h1{font-size:1.5rem;margin:16px 0 8px}
-  .preview h2{font-size:1.25rem;margin:20px 0 8px}
-  .preview h3{font-size:1.1rem;margin:16px 0 6px}
-  .preview p{margin-bottom:12px}
-  .preview ul,.preview ol{margin:0 0 12px 22px}
-  .preview code{background:var(--bg);padding:2px 5px;border-radius:4px;font-size:.88em}
-  .preview pre{background:var(--bg);padding:12px;border-radius:8px;overflow-x:auto;margin:12px 0}
-  .preview pre code{background:none;padding:0}
-  .preview blockquote{border-left:3px solid var(--accent);padding:6px 14px;margin:12px 0;color:var(--muted)}
-  .preview table{border-collapse:collapse;width:100%;margin:12px 0}
-  .preview th,.preview td{border:1px solid var(--border);padding:6px 10px;text-align:left}
-  .preview img{max-width:100%;border-radius:8px}
-  .toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-  .toolbar button{padding:5px 10px;font-size:.8rem;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:inherit}
-  .toolbar button:hover{border-color:var(--accent);color:var(--accent)}
-  .btn{background:var(--accent);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:.92rem;font-weight:600;font-family:inherit}
-  .btn:hover{opacity:.9}
-  .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
-  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-  .output{background:var(--card);border:1px solid var(--border);padding:16px;border-radius:8px;margin-top:20px;white-space:pre-wrap;font-family:ui-monospace,monospace;font-size:.82rem;max-height:400px;overflow:auto;position:relative}
-  .output .copy{position:absolute;top:8px;right:8px;font-size:.75rem;padding:4px 10px}
-  .ai-badge{display:inline-block;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:.7rem;padding:2px 8px;border-radius:99px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-left:8px}
-  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:16px}
-  .stat{background:var(--card);border:1px solid var(--border);padding:12px;border-radius:8px;text-align:center}
-  .stat b{display:block;font-size:1.4rem;color:var(--accent)}
-  .stat span{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'media',
+    theme: {
+      extend: {
+        colors: {
+          accent: { DEFAULT: '#2563eb', dark: '#60a5fa' }
+        }
+      }
+    }
+  }
+</script>
 </head>
 <body>
 <header class="site-header">
