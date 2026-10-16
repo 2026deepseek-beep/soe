@@ -263,13 +263,13 @@ function generateManifest() {
 }
 function generateLLMsTxt() {
   const p = gather();
-  const url = `https://2026deepseek-beep.github.io/blog/post.html?slug=${p.slug}`;
+  const url = `https://2026deepsoe.github.io/soe/post.html?slug=${p.slug}`;
   showOutput('Tambahkan ke llms.txt',
     `- [${p.title}](${url}): ${p.aiSummary}\n`);
 }
 function generateLLMsFull() {
   const p = gather();
-  const url = `https://2026deepseek-beep.github.io/blog/post.html?slug=${p.slug}`;
+  const url = `https://2026deepsoe.github.io/soe/post.html?slug=${p.slug}`;
   showOutput('Tambahkan ke llms-full.txt',
 `## ${p.title}
 
@@ -286,8 +286,8 @@ ${AISEO.stripMd(p.content)}
 function generateFeed() {
   const p = gather();
   const item = {
-    id: `https://2026deepseek-beep.github.io/blog/post.html?slug=${p.slug}`,
-    url: `https://2026deepseek-beep.github.io/blog/post.html?slug=${p.slug}`,
+    id: `https://2026deepsoe.github.io/soe/post.html?slug=${p.slug}`,
+    url: `https://2026deepsoe.github.io/soe/post.html?slug=${p.slug}`,
     title: p.title, summary: p.aiSummary,
     date_published: new Date(p.date).toISOString(),
     tags: p.tags, author: {name: p.author}
@@ -298,7 +298,7 @@ function generateSitemap() {
   const p = gather();
   showOutput('Tambahkan ke sitemap.xml',
 `  <url>
-    <loc>https://2026deepseek-beep.github.io/blog/post.html?slug=${p.slug}</loc>
+    <loc>https://2026deepsoe.github.io/soe/post.html?slug=${p.slug}</loc>
     <lastmod>${p.updated}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

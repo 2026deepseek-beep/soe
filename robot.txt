@@ -29,4 +29,4 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://2026deepseek-beep.github.io/blog/sitemap.xml
+Sitemap: https://2026deepsoe.github.io/soe/sitemap.xml
