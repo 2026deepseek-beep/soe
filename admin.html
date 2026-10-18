@@ -7,19 +7,20 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="assets/style.css">
 <style>
-  /* Custom scrollbar untuk sidebar */
   .sidebar::-webkit-scrollbar { width: 6px; }
   .sidebar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
   .dark .sidebar::-webkit-scrollbar-thumb { background: #475569; }
+  .ai-loading { pointer-events: none; opacity: 0.7; }
+  .ai-loading::after { content: ' ⏳'; }
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 overflow-hidden h-screen flex">
 
-<!-- SIDEBAR -->
-<aside class="sidebar w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 h-full flex flex-col z-20">
+<!-- ================= SIDEBAR ================= -->
+<aside class="sidebar w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 h-full flex flex-col z-20 flex-shrink-0">
   <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
     <a href="./" class="font-bold text-lg text-slate-900 dark:text-slate-100">📝 Blog Soe</a>
-    <span class="text-[10px] bg-accent text-white px-2 py-0.5 rounded-full font-bold">CMS</span>
+    <span class="text-[10px] bg-accent text-white px-2 py-0.5 rounded-full font-bold">CMS PRO</span>
   </div>
   
   <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
@@ -31,6 +32,12 @@
     </button>
     <button onclick="switchTab('list')" class="nav-btn w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors">
       <span>📚</span> Kelola Artikel
+    </button>
+    <button onclick="switchTab('pages')" class="nav-btn w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors text-amber-600 dark:text-amber-500">
+      <span>📄</span> Halaman Statis
+    </button>
+    <button onclick="switchTab('adsense')" class="nav-btn w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors text-green-600 dark:text-green-500">
+      <span>💰</span> AdSense Setup
     </button>
     <button onclick="switchTab('settings')" class="nav-btn w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors">
       <span>⚙️</span> Pengaturan
@@ -44,42 +51,60 @@
   </div>
 </aside>
 
-<!-- MAIN CONTENT -->
+<!-- ================= MAIN CONTENT ================= -->
 <main class="flex-1 h-full overflow-y-auto bg-slate-50 dark:bg-slate-900 p-6 lg:p-10 relative">
   
-  <!-- DASHBOARD TAB -->
-  <div id="tab-dashboard" class="tab-content block max-w-5xl mx-auto">
+  <!-- ================= DASHBOARD ================= -->
+  <div id="tab-dashboard" class="tab-content block max-w-6xl mx-auto">
     <h1 class="text-2xl font-bold mb-6 text-slate-900 dark:text-slate-100">Dashboard</h1>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+    
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
       <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
         <div class="text-sm text-slate-500 mb-1">Total Artikel</div>
         <div id="stat-total" class="text-3xl font-bold text-accent">-</div>
       </div>
       <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-        <div class="text-sm text-slate-500 mb-1">Status GitHub</div>
-        <div id="gh-status" class="text-lg font-bold text-slate-700 dark:text-slate-300">Checking...</div>
+        <div class="text-sm text-slate-500 mb-1">Artikel Publik (ID)</div>
+        <div id="stat-id" class="text-3xl font-bold text-slate-700 dark:text-slate-300">-</div>
       </div>
       <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-        <div class="text-sm text-slate-500 mb-1">Terakhir Publish</div>
-        <div id="last-publish" class="text-lg font-bold text-slate-700 dark:text-slate-300">-</div>
+        <div class="text-sm text-slate-500 mb-1">Artikel Publik (EN)</div>
+        <div id="stat-en" class="text-3xl font-bold text-slate-700 dark:text-slate-300">-</div>
       </div>
+      <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="text-sm text-slate-500 mb-1">Status GitHub</div>
+        <div id="gh-status" class="text-lg font-bold text-slate-700 dark:text-slate-300 mt-1">Checking...</div>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-xl p-6 text-white shadow-md mb-8 flex justify-between items-center">
+      <div>
+        <h2 class="text-xl font-bold mb-1">SEO Analytics (GoatCounter)</h2>
+        <p class="text-sm text-violet-100 opacity-90 mb-4">Pantau performa artikel Anda secara real-time tanpa membebani browser.</p>
+        <a href="https://YOUR_SUBDOMAIN.goatcounter.com" target="_blank" class="btn bg-white text-violet-600 hover:bg-slate-100">📈 Buka Analytics Dashboard →</a>
+      </div>
+      <div class="text-6xl opacity-30">📊</div>
     </div>
 
     <h2 class="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">Aksi Cepat</h2>
     <div class="flex flex-wrap gap-3">
       <button onclick="switchTab('new')" class="btn">✍️ Tulis Artikel Baru</button>
+      <button onclick="switchTab('pages')" class="btn btn-ghost">📄 Kelola Halaman</button>
       <button onclick="loadArticlesList()" class="btn btn-ghost">🔄 Refresh Data</button>
       <a href="./" target="_blank" class="btn btn-ghost">🌐 Lihat Website</a>
     </div>
   </div>
 
-  <!-- EDITOR TAB -->
+  <!-- ================= EDITOR ARTIKEL ================= -->
   <div id="tab-new" class="tab-content hidden max-w-7xl mx-auto">
     <div class="flex justify-between items-center mb-5">
-      <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Tulis Artikel Baru</h1>
+      <div class="flex items-center gap-3">
+        <h1 id="editor-title" class="text-2xl font-bold text-slate-900 dark:text-slate-100">Tulis Artikel Baru</h1>
+        <span id="edit-mode-badge" class="hidden bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded-full font-bold">Mode Edit</span>
+      </div>
       <div class="flex gap-2">
         <button onclick="generatePost()" class="btn btn-ghost">📦 Pratinjau JSON</button>
-        <button onclick="publishArticle()" id="btn-publish" class="btn">🚀 Publish ke GitHub</button>
+        <button onclick="publishArticle()" id="btn-publish" class="btn">🚀 Publish Artikel</button>
       </div>
     </div>
     
@@ -95,23 +120,28 @@
         </div>
 
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-[600px]">
-          <div class="bg-slate-50 dark:bg-slate-900 p-2 border-b border-slate-200 dark:border-slate-700 flex gap-1 flex-wrap">
-            <button type="button" onclick="wrap('**','**')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100"><b>B</b></button>
-            <button type="button" onclick="wrap('*','*')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100"><i>I</i></button>
-            <button type="button" onclick="prefix('## ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">H2</button>
-            <button type="button" onclick="prefix('### ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">H3</button>
-            <button type="button" onclick="prefix('- ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">• List</button>
-            <button type="button" onclick="prefix('> ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">❝ Quote</button>
-            <button type="button" onclick="insert('\n```\ncode\n```\n')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">Code</button>
+          <div class="bg-slate-50 dark:bg-slate-900 p-2 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+            <div class="flex gap-1 flex-wrap">
+              <button type="button" onclick="wrap('**','**')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100"><b>B</b></button>
+              <button type="button" onclick="wrap('*','*')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100"><i>I</i></button>
+              <button type="button" onclick="prefix('## ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">H2</button>
+              <button type="button" onclick="prefix('### ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">H3</button>
+              <button type="button" onclick="prefix('- ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">• List</button>
+              <button type="button" onclick="prefix('> ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">❝ Quote</button>
+              <button type="button" onclick="insert('\n```\ncode\n```\n')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">Code</button>
+              <button type="button" onclick="insert('\n| A | B |\n|---|---|\n| 1 | 2 |\n')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">📊</button>
+            </div>
+            <button type="button" id="btn-ai-generate" onclick="aiGenerateDraft()" class="px-3 py-1 text-xs bg-violet-100 text-violet-700 font-bold border border-violet-200 rounded hover:bg-violet-200 flex items-center gap-1">✨ Generate AI Draft</button>
           </div>
-          <div class="flex-1 flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-slate-200 dark:divide-slate-700">
-            <textarea id="content" class="flex-1 p-4 font-mono text-sm bg-transparent resize-none focus:outline-none" placeholder="# Tulis markdown di sini..." oninput="renderPreview(); updateStats()"></textarea>
-            <div id="preview" class="flex-1 p-4 overflow-y-auto article-content prose dark:prose-invert max-w-none"></div>
+          <div class="flex-1 flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-slate-200 dark:divide-slate-700 overflow-hidden">
+            <textarea id="content" class="flex-1 p-4 font-mono text-sm bg-transparent resize-none focus:outline-none overflow-y-auto" placeholder="# Tulis markdown di sini..." oninput="renderPreview(); updateStats()"></textarea>
+            <div id="preview" class="flex-1 p-4 overflow-y-auto article-content max-w-none"></div>
           </div>
           <div class="bg-slate-50 dark:bg-slate-900 p-2 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500 flex gap-4">
             <span><b id="stat-words">0</b> kata</span>
             <span><b id="stat-read">0</b> menit baca</span>
             <span><b id="stat-faq">0</b> FAQ</span>
+            <span><b id="stat-steps">0</b> Steps</span>
           </div>
         </div>
       </div>
@@ -119,14 +149,25 @@
       <!-- Right: Metadata -->
       <div class="space-y-4">
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 space-y-4 shadow-sm">
-          <h3 class="font-bold border-b pb-2 mb-2 text-slate-900 dark:text-slate-100">SEO Meta</h3>
+          <h3 class="font-bold border-b pb-2 text-slate-900 dark:text-slate-100 flex justify-between items-center">
+            SEO Meta
+            <button onclick="aiGenerateMeta()" class="text-[10px] bg-violet-100 text-violet-700 px-2 py-1 rounded font-bold hover:bg-violet-200">✨ AI Auto-Fill</button>
+          </h3>
           <div>
             <label class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-400">Slug URL (Otomatis)</label>
-            <input id="slug" type="text" class="form-input font-mono text-xs" placeholder="judul-artikel" readonly>
+            <input id="slug" type="text" class="form-input font-mono text-xs" readonly>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-400">Bahasa</label>
+            <select id="lang" class="form-input text-sm">
+              <option value="id-ID">🇮🇩 Bahasa Indonesia</option>
+              <option value="en-US">🇺🇸 English</option>
+            </select>
           </div>
           <div>
             <label class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-400">Meta Description</label>
             <textarea id="description" class="form-input text-sm h-20 resize-none" placeholder="Deskripsi untuk Google..."></textarea>
+            <small id="desc-count" class="text-slate-500 text-xs">0 / 160</small>
           </div>
           <div>
             <label class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-400">Tags (pisah koma)</label>
@@ -144,58 +185,155 @@
           </div>
         </div>
 
-        <div class="bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800 rounded-xl p-4">
-          <h3 class="font-bold text-violet-700 dark:text-violet-400 flex items-center gap-2 mb-2">
-            <span>🤖</span> AI SEO Ready
-          </h3>
-          <p class="text-xs text-violet-600 dark:text-violet-300 leading-relaxed">
-            Sistem akan otomatis mengekstrak FAQ (dari heading <code>## ?</code>) dan HowTo (dari heading <code>## 1.</code>) untuk schema JSON-LD.
-          </p>
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm">
+          <h3 class="font-bold mb-2 text-slate-900 dark:text-slate-100 flex items-center gap-2">🖼️ Image Uploader</h3>
+          <p class="text-xs text-slate-500 mb-3">AI otomatis membuat alt text ramah SEO.</p>
+          <input type="file" id="img-upload" accept="image/*" class="hidden" onchange="handleImageUpload(this)">
+          <button onclick="document.getElementById('img-upload').click()" class="btn btn-ghost w-full text-xs" id="btn-upload-img">📁 Pilih Gambar</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- LIST TAB -->
-  <div id="tab-list" class="tab-content hidden max-w-5xl mx-auto">
+  <!-- ================= LIST ARTIKEL ================= -->
+  <div id="tab-list" class="tab-content hidden max-w-6xl mx-auto">
     <div class="flex justify-between items-center mb-5">
       <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Kelola Artikel</h1>
       <button onclick="loadArticlesList()" class="btn btn-ghost text-sm">🔄 Refresh</button>
     </div>
+    
+    <div id="bulk-bar" class="hidden bg-slate-800 text-white p-3 rounded-xl mb-4 flex justify-between items-center shadow-lg transition-all">
+      <span class="text-sm font-semibold"><span id="bulk-count">0</span> artikel dipilih</span>
+      <div class="flex gap-2">
+        <button onclick="bulkDelete()" class="px-3 py-1.5 bg-red-500 hover:bg-red-600 rounded text-xs font-bold">🗑️ Hapus Terpilih</button>
+        <button onclick="clearSelection()" class="px-3 py-1.5 bg-slate-600 hover:bg-slate-500 rounded text-xs font-bold">Batal</button>
+      </div>
+    </div>
+
     <div id="article-list" class="space-y-3">
       <div class="text-slate-500 text-center py-10">Memuat data...</div>
     </div>
   </div>
 
-  <!-- SETTINGS TAB -->
-  <div id="tab-settings" class="tab-content hidden max-w-2xl mx-auto">
-    <h1 class="text-2xl font-bold mb-5 text-slate-900 dark:text-slate-100">Pengaturan GitHub</h1>
+  <!-- ================= HALAMAN STATIS ================= -->
+  <div id="tab-pages" class="tab-content hidden max-w-5xl mx-auto">
+    <h1 class="text-2xl font-bold mb-2 text-slate-900 dark:text-slate-100">Halaman Statis (AdSense Ready)</h1>
+    <p class="text-sm text-slate-500 mb-5">Buat halaman syarat AdSense: About, Contact, Privacy Policy, Disclaimer.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="md:col-span-2 space-y-4">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+          <input id="page-title" type="text" placeholder="Judul Halaman (misal: Privacy Policy)..." class="w-full text-xl font-bold bg-transparent border-none focus:outline-none text-slate-900 dark:text-slate-100 placeholder-slate-400" oninput="updatePageSlug()">
+          <div class="flex items-center gap-2 text-sm text-slate-500 mt-2">
+            <span>URL:</span>
+            <span id="page-slug-preview" class="font-mono bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded text-accent">/halaman/privacy-policy</span>
+          </div>
+        </div>
+        
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="bg-slate-50 dark:bg-slate-900 p-2 border-b border-slate-200 dark:border-slate-700 flex gap-1 flex-wrap">
+            <button type="button" onclick="wrapPage('**','**')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100"><b>B</b></button>
+            <button type="button" onclick="prefixPage('## ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">H2</button>
+            <button type="button" onclick="prefixPage('- ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">• List</button>
+          </div>
+          <textarea id="page-content" class="w-full h-[400px] p-4 font-mono text-sm bg-transparent resize-none focus:outline-none" placeholder="# Kebijakan Privasi..."></textarea>
+        </div>
+      </div>
+      
+      <div class="space-y-4">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 space-y-4">
+          <div>
+            <label class="block text-xs font-semibold mb-1">Slug (Otomatis)</label>
+            <input id="page-slug" type="text" class="form-input font-mono text-xs" readonly>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold mb-1">Meta Description</label>
+            <textarea id="page-desc" class="form-input text-sm h-20 resize-none" placeholder="Deskripsi halaman..."></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold mb-1">Tanggal</label>
+            <input id="page-date" type="date" class="form-input text-sm">
+          </div>
+          <button onclick="publishPage()" id="btn-publish-page" class="btn w-full">🚀 Publish Halaman</button>
+        </div>
+        
+        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-4 rounded-xl">
+          <h3 class="font-bold text-amber-700 dark:text-amber-500 text-sm mb-2">💡 Template Cepat</h3>
+          <div class="space-y-2">
+            <button onclick="loadTemplate('privacy')" class="text-xs text-left w-full p-2 bg-white dark:bg-slate-800 rounded border border-amber-200 hover:border-amber-400">1. Privacy Policy</button>
+            <button onclick="loadTemplate('disclaimer')" class="text-xs text-left w-full p-2 bg-white dark:bg-slate-800 rounded border border-amber-200 hover:border-amber-400">2. Disclaimer</button>
+            <button onclick="loadTemplate('about')" class="text-xs text-left w-full p-2 bg-white dark:bg-slate-800 rounded border border-amber-200 hover:border-amber-400">3. About Us</button>
+            <button onclick="loadTemplate('contact')" class="text-xs text-left w-full p-2 bg-white dark:bg-slate-800 rounded border border-amber-200 hover:border-amber-400">4. Contact Us</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ADSENSE SETUP ================= -->
+  <div id="tab-adsense" class="tab-content hidden max-w-3xl mx-auto">
+    <h1 class="text-2xl font-bold mb-5 text-slate-900 dark:text-slate-100">💰 AdSense Setup</h1>
     <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-5">
-      <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-4 rounded-lg text-sm text-amber-700 dark:text-amber-400 mb-4">
-        <b>⚠️ Penting:</b> Token disimpan di <code>localStorage</code> browser Anda. Jangan gunakan di komputer publik.
+      <p class="text-sm text-slate-500 mb-4">Simpan kode script AdSense Anda di sini. Kode ini akan otomatis dimasukkan ke file <code>index.html</code>, <code>post.html</code>, dan <code>page.html</code>.</p>
+      
+      <div>
+        <label class="block font-semibold text-sm mb-1.5">Google AdSense Client ID</label>
+        <input id="adsense-id" type="text" class="form-input font-mono" placeholder="ca-pub-XXXXXXXXXXXXXXXX">
       </div>
       
       <div>
-        <label class="block font-semibold text-sm mb-1.5 text-slate-700 dark:text-slate-300">GitHub Username</label>
-        <input id="gh-user" type="text" class="form-input" value="2026deepsoe" placeholder="username">
+        <label class="block font-semibold text-sm mb-1.5">Auto Ads Script (Opsional)</label>
+        <textarea id="adsense-script" class="form-input font-mono text-xs h-32" placeholder='<script async src="..."></script>'></textarea>
+      </div>
+      
+      <button onclick="saveAdSense()" id="btn-adsense" class="btn w-full">💾 Simpan & Terapkan Kode</button>
+      <p class="text-xs text-slate-500 mt-2">*Fitur ini membutuhkan akses GitHub Token untuk memodifikasi file HTML secara otomatis.</p>
+    </div>
+  </div>
+
+  <!-- ================= PENGATURAN ================= -->
+  <div id="tab-settings" class="tab-content hidden max-w-2xl mx-auto">
+    <h1 class="text-2xl font-bold mb-5 text-slate-900 dark:text-slate-100">Pengaturan</h1>
+    
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-5 mb-6">
+      <h2 class="font-bold text-lg border-b pb-2 mb-4 text-slate-900 dark:text-slate-100">🔑 Integrasi GitHub</h2>
+      <div>
+        <label class="block font-semibold text-sm mb-1.5">GitHub Username</label>
+        <input id="gh-user" type="text" class="form-input" value="2026deepsoe">
       </div>
       <div>
-        <label class="block font-semibold text-sm mb-1.5 text-slate-700 dark:text-slate-300">Repository Name</label>
-        <input id="gh-repo" type="text" class="form-input" value="soe" placeholder="nama-repo">
+        <label class="block font-semibold text-sm mb-1.5">Repository Name</label>
+        <input id="gh-repo" type="text" class="form-input" value="soe">
       </div>
       <div>
-        <label class="block font-semibold text-sm mb-1.5 text-slate-700 dark:text-slate-300">Branch</label>
-        <input id="gh-branch" type="text" class="form-input" value="main" placeholder="main">
+        <label class="block font-semibold text-sm mb-1.5">Branch</label>
+        <input id="gh-branch" type="text" class="form-input" value="main">
       </div>
       <div>
-        <label class="block font-semibold text-sm mb-1.5 text-slate-700 dark:text-slate-300">Personal Access Token (PAT)</label>
+        <label class="block font-semibold text-sm mb-1.5">Personal Access Token (PAT)</label>
         <input id="gh-token" type="password" class="form-input" placeholder="ghp_xxxxxxxxxxxx">
-        <p class="text-xs text-slate-500 mt-1">Butuh scope: <code>repo</code> (atau fine-grained: Contents=Read&Write).</p>
+        <p class="text-xs text-slate-500 mt-1">Scope: <code>repo</code> (Contents=Read&Write).</p>
       </div>
-      
-      <div class="pt-4 border-t border-slate-200 dark:border-slate-700">
-        <button onclick="saveSettings()" class="btn w-full">💾 Simpan Pengaturan</button>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-5">
+      <h2 class="font-bold text-lg border-b pb-2 mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">🤖 AI Assistant (OpenAI)</h2>
+      <p class="text-xs text-slate-500 mb-4">Dapatkan API Key di <a href="https://platform.openai.com/api-keys" target="_blank" class="text-accent underline">platform.openai.com</a>. Key disimpan di browser Anda.</p>
+      <div>
+        <label class="block font-semibold text-sm mb-1.5">OpenAI API Key</label>
+        <input id="openai-key" type="password" class="form-input" placeholder="sk-...">
       </div>
+      <div>
+        <label class="block font-semibold text-sm mb-1.5">Model</label>
+        <select id="openai-model" class="form-input">
+          <option value="gpt-4o-mini">gpt-4o-mini (Cepat & Murah)</option>
+          <option value="gpt-4o">gpt-4o (Paling Pintar)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="pt-4 border-t border-slate-200 dark:border-slate-700 mt-6">
+      <button onclick="saveSettings()" class="btn w-full">💾 Simpan Semua Pengaturan</button>
     </div>
   </div>
 
@@ -214,38 +352,66 @@
 const $ = id => document.getElementById(id);
 let currentTab = 'dashboard';
 let manifestData = [];
+let editingSlug = null;
+let selectedSlugs = new Set();
 
-// Load settings dari localStorage
-let settings = JSON.parse(localStorage.getItem('gh_settings')) || {
-  user: '2026deepsoe', repo: 'soe', branch: 'main', token: ''
+let settings = JSON.parse(localStorage.getItem('cms_settings')) || {
+  ghUser: '2026deepsoe', ghRepo: 'soe', ghBranch: 'main', ghToken: '',
+  openaiKey: '', openaiModel: 'gpt-4o-mini'
 };
 
-// Init UI
 document.addEventListener('DOMContentLoaded', () => {
-  // Set tanggal hari ini
   if ($('date')) $('date').valueAsDate = new Date();
+  if ($('page-date')) $('page-date').valueAsDate = new Date();
   
-  // Load settings ke form
-  $('gh-user').value = settings.user;
-  $('gh-repo').value = settings.repo;
-  $('gh-branch').value = settings.branch;
-  $('gh-token').value = settings.token;
+  $('gh-user').value = settings.ghUser;
+  $('gh-repo').value = settings.ghRepo;
+  $('gh-branch').value = settings.ghBranch;
+  $('gh-token').value = settings.ghToken;
+  $('openai-key').value = settings.openaiKey;
+  $('openai-model').value = settings.openaiModel;
+  
+  // Load AdSense settings
+  $('adsense-id').value = localStorage.getItem('adsense_id') || '';
+  $('adsense-script').value = localStorage.getItem('adsense_script') || '';
 
-  // Update nav styles
   updateNavStyles();
   
-  // Cek koneksi jika token ada
-  if (settings.token) {
+  if (settings.ghToken) {
     checkConnection();
     loadArticlesList();
   } else {
     $('gh-status').textContent = 'Belum diatur';
     $('gh-status').classList.add('text-amber-500');
   }
+
+  // Auto-save draft ke localStorage
+  setInterval(() => {
+    if (currentTab === 'new' && ($('title').value || $('content').value)) {
+      localStorage.setItem('draft_article', JSON.stringify({
+        title: $('title').value, slug: $('slug').value, content: $('content').value,
+        description: $('description').value, tags: $('tags').value, lang: $('lang').value,
+        date: $('date').value, author: $('author').value, timestamp: Date.now()
+      }));
+    }
+  }, 5000);
+
+  // Desc counter
+  $('description')?.addEventListener('input', e => {
+    $('desc-count').textContent = `${e.target.value.length} / 160`;
+  });
 });
 
 // ================== NAVIGATION ==================
 function switchTab(tab) {
+  if (currentTab === 'new' && tab !== 'new' && $('title').value && $('content').value && !window.confirmLeave) {
+    if (!confirm('Artikel belum disimpan. Yakin mau pindah tab?')) return;
+  }
+  if (currentTab === 'pages' && tab !== 'pages' && $('page-title').value && $('page-content').value) {
+    if (!confirm('Halaman belum disimpan. Yakin mau pindah tab?')) return;
+  }
+  window.confirmLeave = false;
+
   currentTab = tab;
   document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
   $('tab-' + tab).classList.remove('hidden');
@@ -258,26 +424,23 @@ function switchTab(tab) {
 function updateNavStyles() {
   document.querySelectorAll('.nav-btn').forEach(btn => {
     const isActive = btn.getAttribute('onclick').includes(`'${currentTab}'`);
+    btn.classList.remove('bg-accent', 'text-white', 'shadow-md', 'text-slate-600', 'hover:bg-slate-100', 'dark:text-slate-300', 'dark:hover:bg-slate-700');
     if (isActive) {
       btn.classList.add('bg-accent', 'text-white', 'shadow-md');
-      btn.classList.remove('text-slate-600', 'hover:bg-slate-100', 'dark:text-slate-300', 'dark:hover:bg-slate-700');
     } else {
-      btn.classList.remove('bg-accent', 'text-white', 'shadow-md');
       btn.classList.add('text-slate-600', 'hover:bg-slate-100', 'dark:text-slate-300', 'dark:hover:bg-slate-700');
+      if (btn.getAttribute('onclick').includes('pages')) btn.classList.add('text-amber-600', 'dark:text-amber-500');
+      if (btn.getAttribute('onclick').includes('adsense')) btn.classList.add('text-green-600', 'dark:text-green-500');
     }
   });
 }
 
 // ================== TOAST ==================
 function showToast(msg, type = 'success') {
-  const toast = $('toast');
-  const icon = $('toast-icon');
-  const msgEl = $('toast-msg');
-  
+  const toast = $('toast'), icon = $('toast-icon'), msgEl = $('toast-msg');
   icon.textContent = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
   toast.style.background = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
   msgEl.textContent = msg;
-  
   toast.classList.remove('translate-y-20', 'opacity-0');
   setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3500);
 }
@@ -285,83 +448,162 @@ function showToast(msg, type = 'success') {
 // ================== SETTINGS ==================
 function saveSettings() {
   settings = {
-    user: $('gh-user').value.trim(),
-    repo: $('gh-repo').value.trim(),
-    branch: $('gh-branch').value.trim(),
-    token: $('gh-token').value.trim()
+    ghUser: $('gh-user').value.trim(),
+    ghRepo: $('gh-repo').value.trim(),
+    ghBranch: $('gh-branch').value.trim(),
+    ghToken: $('gh-token').value.trim(),
+    openaiKey: $('openai-key').value.trim(),
+    openaiModel: $('openai-model').value
   };
-  localStorage.setItem('gh_settings', JSON.stringify(settings));
+  localStorage.setItem('cms_settings', JSON.stringify(settings));
   showToast('Pengaturan disimpan!');
   checkConnection();
 }
 
 async function checkConnection() {
-  if (!settings.token) return;
+  if (!settings.ghToken) return;
   const el = $('gh-status');
   el.textContent = 'Menghubungkan...';
-  el.className = 'text-lg font-bold text-amber-500';
+  el.className = 'text-lg font-bold text-amber-500 mt-1';
   
   try {
-    const res = await fetch(`https://api.github.com/repos/${settings.user}/${settings.repo}`, {
-      headers: { 'Authorization': `Bearer ${settings.token}` }
+    const res = await fetch(`https://api.github.com/repos/${settings.ghUser}/${settings.ghRepo}`, {
+      headers: { 'Authorization': `Bearer ${settings.ghToken}` }
     });
     if (res.ok) {
       el.textContent = '✅ Terhubung';
-      el.className = 'text-lg font-bold text-green-500';
-      $('connection-status').innerHTML = `<span class="w-2 h-2 rounded-full bg-green-500"></span> Terhubung ke ${settings.user}/${settings.repo}`;
-    } else {
-      throw new Error('Token invalid');
-    }
+      el.className = 'text-lg font-bold text-green-500 mt-1';
+      $('connection-status').innerHTML = `<span class="w-2 h-2 rounded-full bg-green-500"></span> ${settings.ghUser}/${settings.ghRepo}`;
+    } else throw new Error('Invalid');
   } catch (e) {
     el.textContent = '❌ Gagal';
-    el.className = 'text-lg font-bold text-red-500';
+    el.className = 'text-lg font-bold text-red-500 mt-1';
     $('connection-status').innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500"></span> Gagal terhubung`;
   }
 }
 
-// ================== GITHUB API HELPERS ==================
+// ================== GITHUB API ==================
 async function ghRequest(path, method = 'GET', body = null) {
-  const url = `https://api.github.com/repos/${settings.user}/${settings.repo}/contents/${path}`;
-  const headers = {
-    'Authorization': `Bearer ${settings.token}`,
-    'Accept': 'application/vnd.github.v3+json'
-  };
-  
+  const url = `https://api.github.com/repos/${settings.ghUser}/${settings.ghRepo}/contents/${path}`;
+  const headers = { 'Authorization': `Bearer ${settings.ghToken}`, 'Accept': 'application/vnd.github.v3+json' };
   const opts = { method, headers };
   if (body) {
     opts.body = JSON.stringify({
       message: body.message || `Update ${path}`,
       content: btoa(unescape(encodeURIComponent(body.content))),
       sha: body.sha,
-      branch: settings.branch
+      branch: settings.ghBranch
     });
   }
-  
   const res = await fetch(url, opts);
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message || 'GitHub API Error');
-  }
+  if (!res.ok) { const err = await res.json(); throw new Error(err.message || 'GitHub API Error'); }
   return res.json();
 }
 
 async function ghGetFile(path) {
   try {
-    const res = await fetch(`https://api.github.com/repos/${settings.user}/${settings.repo}/contents/${path}?ref=${settings.branch}`, {
-      headers: { 'Authorization': `Bearer ${settings.token}` }
+    const res = await fetch(`https://api.github.com/repos/${settings.ghUser}/${settings.ghRepo}/contents/${path}?ref=${settings.ghBranch}`, {
+      headers: { 'Authorization': `Bearer ${settings.ghToken}` }
     });
     if (!res.ok) return null;
     const data = await res.json();
-    // Decode base64 Unicode-safe
-    const content = decodeURIComponent(escape(atob(data.content)));
-    return { sha: data.sha, content };
+    return { sha: data.sha, content: decodeURIComponent(escape(atob(data.content))) };
   } catch (e) { return null; }
+}
+
+async function ghDelete(path, sha, message) {
+  const res = await fetch(`https://api.github.com/repos/${settings.ghUser}/${settings.ghRepo}/contents/${path}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${settings.ghToken}` },
+    body: JSON.stringify({ message, sha, branch: settings.ghBranch })
+  });
+  if (!res.ok) { const err = await res.json(); throw new Error(err.message); }
+  return res.json();
+}
+
+// ================== STATIC HTML GENERATOR ==================
+function generateStaticHTML(post, type = 'post') {
+  const isPage = type === 'page';
+  const titleSuffix = isPage ? '' : ' — Blog Soe';
+  const desc = (post.description || '').replace(/"/g, '&quot;');
+  const baseUrl = `https://${settings.ghUser}.github.io/${settings.ghRepo}`;
+  const canonical = `${baseUrl}/${isPage ? 'halaman' : 'artikel'}/${post.slug}/`;
+  const adsenseId = localStorage.getItem('adsense_id');
+  const adsenseScript = adsenseId 
+    ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}" crossorigin="anonymous"></script>` 
+    : '';
+
+  const schema = isPage ? {
+    "@context": "https://schema.org", "@type": "WebPage",
+    "name": post.title, "description": post.description, "url": canonical
+  } : AISEO.articleSchema(post, post.slug);
+
+  return `<!DOCTYPE html>
+<html lang="${post.lang || 'id-ID'}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${post.title}${titleSuffix}</title>
+<meta name="description" content="${desc}">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<link rel="canonical" href="${canonical}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="${post.title.replace(/"/g, '&quot;')}">
+<meta property="og:description" content="${desc}">
+<meta property="og:url" content="${canonical}">
+<meta name="twitter:card" content="summary_large_image">
+${!isPage ? `<link rel="alternate" hreflang="${post.lang || 'id-ID'}" href="${canonical}">` : ''}
+<link rel="stylesheet" href="${baseUrl}/assets/style.css">
+${adsenseScript}
+<script type="application/ld+json">${JSON.stringify(schema)}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container-blog flex justify-between items-center py-3.5">
+    <a href="${baseUrl}/" class="logo">📝 Blog Soe</a>
+    <nav><a href="${baseUrl}/" class="nav-link">← Kembali</a></nav>
+  </div>
+</header>
+<main class="container-blog">
+  <article class="my-10 mb-20">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${baseUrl}/">Home</a> / <span>${post.title}</span></nav>
+    <h1 class="article-title">${post.title}</h1>
+    <div class="article-meta">
+      <time datetime="${post.date}">📅 ${new Date(post.date).toLocaleDateString('id-ID', {year:'numeric',month:'long',day:'numeric'})}</time>
+      <span>✍️ ${post.author || 'Admin'}</span>
+      ${!isPage && post.readingTime ? `<span>⏱️ ${post.readingTime} menit baca</span>` : ''}
+      ${(post.tags||[]).map(t => `<span class="tag">${t}</span>`).join('')}
+    </div>
+    ${post.aiSummary && !isPage ? `<aside class="article-summary" aria-label="Ringkasan"><strong>TL;DR:</strong> ${post.aiSummary}</aside>` : ''}
+    <div class="article-content" id="static-content"></div>
+    ${!isPage && post.faqs && post.faqs.length ? `
+    <section class="faq-section">
+      <h2>❓ Pertanyaan Umum</h2>
+      ${post.faqs.map(f => `<details class="faq-item"><summary>${f.q}</summary><p>${f.a}</p></details>`).join('')}
+    </section>` : ''}
+  </article>
+</main>
+<footer class="site-footer">
+  <div class="container-blog flex flex-col items-center gap-2">
+    <p>&copy; ${new Date().getFullYear()} Blog Soe.</p>
+    <div class="flex gap-4 text-xs">
+      <a href="${baseUrl}/halaman/about/" class="hover:text-accent">About</a>
+      <a href="${baseUrl}/halaman/contact/" class="hover:text-accent">Contact</a>
+      <a href="${baseUrl}/halaman/privacy-policy/" class="hover:text-accent">Privacy</a>
+      <a href="${baseUrl}/halaman/disclaimer/" class="hover:text-accent">Disclaimer</a>
+    </div>
+  </div>
+</footer>
+<script src="${baseUrl}/assets/markdown.js"></script>
+<script>document.getElementById('static-content').innerHTML = MD.parse(${JSON.stringify(post.content)});</script>
+</body>
+</html>`;
 }
 
 // ================== LIST ARTIKEL ==================
 async function loadArticlesList() {
   const list = $('article-list');
-  if (!settings.token) {
+  if (!settings.ghToken) {
     list.innerHTML = `<div class="bg-amber-50 text-amber-700 p-4 rounded-lg text-center">Atur GitHub Token di menu Pengaturan terlebih dahulu.</div>`;
     return;
   }
@@ -374,30 +616,29 @@ async function loadArticlesList() {
     
     manifestData = JSON.parse(file.content);
     $('stat-total').textContent = manifestData.length;
-    if (manifestData.length > 0) {
-      const latest = manifestData.sort((a,b) => new Date(b.date) - new Date(a.date))[0];
-      $('last-publish').textContent = latest ? latest.title.substring(0, 20) + '...' : '-';
-    }
+    $('stat-id').textContent = manifestData.filter(p => (p.lang || 'id-ID') === 'id-ID').length;
+    $('stat-en').textContent = manifestData.filter(p => p.lang === 'en-US').length;
     
-    // Render list
     if (manifestData.length === 0) {
       list.innerHTML = `<div class="bg-white dark:bg-slate-800 rounded-xl p-10 text-center text-slate-500">Belum ada artikel.</div>`;
       return;
     }
     
-    list.innerHTML = manifestData.map(p => `
-      <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between hover:border-accent transition group">
-        <div class="flex-1">
-          <h3 class="font-bold text-lg text-slate-900 dark:text-slate-100 mb-1">${p.title}</h3>
-          <div class="text-sm text-slate-500 flex gap-3">
+    list.innerHTML = manifestData.sort((a,b) => new Date(b.date) - new Date(a.date)).map(p => `
+      <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 flex items-center gap-4 hover:border-accent transition group">
+        <input type="checkbox" onchange="toggleSelect('${p.slug}', this.checked)" class="w-4 h-4 text-accent rounded focus:ring-accent">
+        <div class="flex-1 min-w-0">
+          <h3 class="font-bold text-lg text-slate-900 dark:text-slate-100 mb-1 truncate">${p.title}</h3>
+          <div class="text-sm text-slate-500 flex items-center gap-3 flex-wrap">
             <span>📅 ${p.date}</span>
-            <span>⏱️ ${p.readingTime || 0} menit</span>
             <span class="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1.5 rounded text-accent">${p.slug}</span>
+            <span class="bg-slate-200 dark:bg-slate-700 px-1.5 rounded text-[10px] font-bold uppercase">${p.lang || 'id-ID'}</span>
           </div>
         </div>
         <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition">
-          <a href="post.html?slug=${p.slug}" target="_blank" class="p-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg" title="Lihat">👁️</a>
-          <button onclick="deleteArticle('${p.slug}')" class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg" title="Hapus">🗑️</button>
+          <a href="${p.url || `./artikel/${p.slug}/`}" target="_blank" class="p-2 text-blue-500 hover:bg-blue-50 rounded-lg" title="Lihat">👁️</a>
+          <button onclick="editArticle('${p.slug}')" class="p-2 text-amber-500 hover:bg-amber-50 rounded-lg" title="Edit">✏️</button>
+          <button onclick="deleteArticle('${p.slug}')" class="p-2 text-red-500 hover:bg-red-50 rounded-lg" title="Hapus">🗑️</button>
         </div>
       </div>
     `).join('');
@@ -407,99 +648,101 @@ async function loadArticlesList() {
   }
 }
 
-// ================== PUBLISH ==================
-async function publishArticle() {
-  if (!settings.token) return showToast('Atur GitHub Token dulu di Pengaturan!', 'error');
-  
-  const p = gather();
-  if (!p.title || !p.content) return showToast('Judul dan konten wajib diisi!', 'error');
-  
-  const btn = $('btn-publish');
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Publishing...';
-  
-  try {
-    // 1. Buat file posts/slug.json
-    const existing = await ghGetFile(`posts/${p.slug}.json`);
-    await ghRequest(`posts/${p.slug}.json`, 'PUT', {
-      content: JSON.stringify(p, null, 2),
-      sha: existing ? existing.sha : undefined,
-      message: `post: add "${p.title}"`
-    });
-    
-    // 2. Update posts/index.json
-    const idxFile = await ghGetFile('posts/index.json');
-    let index = idxFile ? JSON.parse(idxFile.content) : [];
-    index = index.filter(x => x.slug !== p.slug); // hapus duplikat
-    index.push({
-      slug: p.slug, title: p.title, description: p.description,
-      aiSummary: p.aiSummary, date: p.date, author: p.author,
-      tags: p.tags, category: p.category, readingTime: p.readingTime
-    });
-    await ghRequest('posts/index.json', 'PUT', {
-      content: JSON.stringify(index, null, 2),
-      sha: idxFile ? idxFile.sha : undefined,
-      message: `index: update (${index.length} artikel)`
-    });
-    
-    // 3. Update llms.txt (append) - Opsional
-    try {
-      const llms = await ghGetFile('llms.txt');
-      if (llms) {
-        let newContent = llms.content;
-        const entry = `- [${p.title}](https://${settings.user}.github.io/${settings.repo}/post.html?slug=${p.slug}): ${p.aiSummary}\n`;
-        if (!newContent.includes(p.slug)) {
-          newContent = newContent.replace('## Articles\n', `## Articles\n${entry}`);
-          await ghRequest('llms.txt', 'PUT', { content: newContent, sha: llms.sha, message: 'llms: update' });
-        }
-      }
-    } catch (e) { console.warn('Skip llms update:', e.message); }
-    
-    // 4. Update sitemap.xml (append) - Opsional
-    try {
-      const sitemap = await ghGetFile('sitemap.xml');
-      if (sitemap) {
-        let newContent = sitemap.content;
-        const entry = `  <url><loc>https://${settings.user}.github.io/${settings.repo}/post.html?slug=${p.slug}</loc><lastmod>${p.date}</lastmod><priority>0.8</priority></url>\n`;
-        if (!newContent.includes(p.slug)) {
-          newContent = newContent.replace('</urlset>', `${entry}</urlset>`);
-          await ghRequest('sitemap.xml', 'PUT', { content: newContent, sha: sitemap.sha, message: 'sitemap: update' });
-        }
-      }
-    } catch (e) { console.warn('Skip sitemap update:', e.message); }
-    
-    showToast(`🚀 "${p.title}" berhasil dipublish! Website update dalam 30 detik.`);
-    
-    // Reset form
-    resetForm();
-    loadArticlesList();
-    switchTab('list');
-    
-  } catch (e) {
-    showToast('Gagal publish: ' + e.message, 'error');
-    console.error(e);
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '🚀 Publish ke GitHub';
+function toggleSelect(slug, checked) {
+  if (checked) selectedSlugs.add(slug);
+  else selectedSlugs.delete(slug);
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  const bar = $('bulk-bar');
+  if (selectedSlugs.size > 0) {
+    bar.classList.remove('hidden');
+    $('bulk-count').textContent = selectedSlugs.size;
+  } else {
+    bar.classList.add('hidden');
   }
 }
 
-// ================== DELETE ==================
-async function deleteArticle(slug) {
-  if (!confirm(`Yakin mau hapus artikel "${slug}"?`)) return;
+function clearSelection() {
+  selectedSlugs.clear();
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+  updateBulkBar();
+}
+
+async function bulkDelete() {
+  if (!confirm(`Yakin mau hapus ${selectedSlugs.size} artikel? Tindakan tidak bisa dibatalkan.`)) return;
   
   try {
-    // 1. Hapus file artikel
-    const file = await ghGetFile(`posts/${slug}.json`);
-    if (!file) throw new Error('File tidak ditemukan');
+    for (const slug of selectedSlugs) {
+      // Hapus JSON
+      const file = await ghGetFile(`posts/${slug}.json`);
+      if (file) await ghDelete(`posts/${slug}.json`, file.sha, `bulk delete: ${slug}`);
+      
+      // Hapus HTML statis
+      const html = await ghGetFile(`artikel/${slug}/index.html`);
+      if (html) await ghDelete(`artikel/${slug}/index.html`, html.sha, `delete html: ${slug}`);
+    }
     
-    await fetch(`https://api.github.com/repos/${settings.user}/${settings.repo}/contents/posts/${slug}.json`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${settings.token}` },
-      body: JSON.stringify({ message: `delete: ${slug}`, sha: file.sha, branch: settings.branch })
+    // Update index.json
+    const idxFile = await ghGetFile('posts/index.json');
+    const index = JSON.parse(idxFile.content).filter(x => !selectedSlugs.has(x.slug));
+    await ghRequest('posts/index.json', 'PUT', {
+      content: JSON.stringify(index, null, 2),
+      sha: idxFile.sha,
+      message: `index: bulk remove ${selectedSlugs.size} artikel`
     });
     
-    // 2. Update index.json
+    showToast(`🗑️ ${selectedSlugs.size} artikel dihapus`);
+    clearSelection();
+    loadArticlesList();
+  } catch (e) {
+    showToast('Gagal: ' + e.message, 'error');
+  }
+}
+
+// ================== EDIT ARTIKEL ==================
+async function editArticle(slug) {
+  try {
+    const file = await ghGetFile(`posts/${slug}.json`);
+    if (!file) throw new Error('File tidak ditemukan');
+    const post = JSON.parse(file.content);
+    
+    editingSlug = slug;
+    switchTab('new');
+    
+    $('editor-title').textContent = 'Edit Artikel';
+    $('edit-mode-badge').classList.remove('hidden');
+    
+    $('title').value = post.title;
+    $('slug').value = post.slug;
+    $('slug-preview').textContent = '/artikel/' + post.slug;
+    $('content').value = post.content;
+    $('description').value = post.description;
+    $('tags').value = (post.tags || []).join(', ');
+    $('lang').value = post.lang || 'id-ID';
+    $('date').value = post.date;
+    $('author').value = post.author || 'Admin';
+    
+    renderPreview(); updateStats();
+    showToast('Artikel dimuat ke editor');
+  } catch (e) {
+    showToast('Gagal load: ' + e.message, 'error');
+  }
+}
+
+async function deleteArticle(slug) {
+  if (!confirm(`Yakin mau hapus artikel "${slug}"?`)) return;
+  try {
+    // Hapus JSON
+    const file = await ghGetFile(`posts/${slug}.json`);
+    if (file) await ghDelete(`posts/${slug}.json`, file.sha, `delete: ${slug}`);
+    
+    // Hapus HTML statis
+    const html = await ghGetFile(`artikel/${slug}/index.html`);
+    if (html) await ghDelete(`artikel/${slug}/index.html`, html.sha, `delete html: ${slug}`);
+    
+    // Update index
     const idxFile = await ghGetFile('posts/index.json');
     const index = JSON.parse(idxFile.content).filter(x => x.slug !== slug);
     await ghRequest('posts/index.json', 'PUT', {
@@ -515,30 +758,413 @@ async function deleteArticle(slug) {
   }
 }
 
+// ================== AI HELPER ==================
+async function callAI(prompt, systemPrompt = "You are a helpful SEO assistant and expert copywriter.") {
+  if (!settings.openaiKey) throw new Error('OpenAI API Key belum diatur di Pengaturan');
+  
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${settings.openaiKey}` },
+    body: JSON.stringify({
+      model: settings.openaiModel,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: prompt }
+      ],
+      temperature: 0.7
+    })
+  });
+  
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error?.message || 'Gagal memanggil AI');
+  }
+  
+  const data = await res.json();
+  return data.choices[0].message.content;
+}
+
+async function aiGenerateDraft() {
+  const title = $('title').value || prompt('Masukkan judul artikel:');
+  if (!title) return;
+  
+  const btn = $('btn-ai-generate');
+  btn.classList.add('ai-loading'); btn.textContent = '✨ Menulis...';
+  
+  try {
+    const prompt = `Tulis artikel blog lengkap dalam format Markdown dengan judul "${title}". 
+    Aturan wajib:
+    1. Sertakan heading "## 1.", "## 2." untuk struktur HowTo (minimal 3 langkah).
+    2. Sertakan heading "##" yang mengandung tanda tanya "?" untuk FAQ (minimal 2 pertanyaan).
+    3. Gaya bahasa santai tapi profesional, dalam Bahasa Indonesia.
+    4. Panjang artikel sekitar 300-500 kata.`;
+    
+    const content = await callAI(prompt);
+    $('content').value = content;
+    $('title').value = title;
+    updateSlug();
+    renderPreview(); updateStats();
+    showToast('✨ Draft artikel berhasil dibuat!');
+  } catch (e) {
+    showToast(e.message, 'error');
+  } finally {
+    btn.classList.remove('ai-loading'); btn.textContent = '✨ Generate AI Draft';
+  }
+}
+
+async function aiGenerateMeta() {
+  const content = $('content').value;
+  if (!content) return showToast('Tulis konten dulu', 'error');
+  
+  const title = $('title').value;
+  const btn = event.target;
+  btn.textContent = '✨ Loading...'; btn.disabled = true;
+  
+  try {
+    const prompt = `Berdasarkan judul "${title}" dan isi artikel berikut:
+    "${content.substring(0, 1500)}"
+    
+    Buatkan:
+    1. Meta description (maksimal 160 karakter, memancing klik, ramah SEO).
+    2. 3-5 tags (pisahkan dengan koma, huruf kecil semua).
+    
+    Format output HANYA seperti ini (tanpa markdown):
+    DESC: [meta description]
+    TAGS: [tag1, tag2]`;
+    
+    const result = await callAI(prompt);
+    const descMatch = result.match(/DESC:\s*(.+)/i);
+    const tagsMatch = result.match(/TAGS:\s*(.+)/i);
+    
+    if (descMatch) $('description').value = descMatch[1].trim();
+    if (tagsMatch) $('tags').value = tagsMatch[1].trim();
+    $('desc-count').textContent = `${$('description').value.length} / 160`;
+    
+    showToast('✨ Meta & Tags diisi otomatis!');
+  } catch (e) {
+    showToast(e.message, 'error');
+  } finally {
+    btn.textContent = '✨ AI Auto-Fill'; btn.disabled = false;
+  }
+}
+
+// ================== IMAGE UPLOAD ==================
+async function handleImageUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  
+  const btn = $('btn-upload-img');
+  btn.textContent = '⏳ Mengompres...'; btn.disabled = true;
+  
+  try {
+    const compressed = await compressImage(file);
+    const reader = new FileReader();
+    reader.readAsDataURL(compressed);
+    
+    reader.onload = async () => {
+      btn.textContent = '⏳ Generate Alt Text...';
+      const base64 = reader.result.split(',')[1];
+      const safeName = file.name.replace(/[^a-zA-Z0-9.]/g, '-').toLowerCase().replace(/\.(jpg|jpeg|png|gif)$/, '.webp');
+      const path = `assets/uploads/${Date.now()}-${safeName}`;
+      
+      let altText = 'Gambar artikel';
+      try {
+        altText = await callAI(`Berikan alt text SEO yang singkat (maks 10 kata) untuk gambar bernama "${file.name}". Output hanya teksnya saja.`, "Kamu adalah ahli SEO. Output hanya teks polos tanpa tanda kutip.");
+      } catch (e) { console.warn('AI Alt Skip:', e.message); }
+      
+      btn.textContent = '⏳ Upload ke GitHub...';
+      await ghRequest(path, 'PUT', {
+        content: base64,
+        message: `upload image: ${safeName}`
+      });
+      
+      const url = `https://${settings.ghUser}.github.io/${settings.ghRepo}/${path}`;
+      insert(`\n![${altText}](${url})\n`);
+      
+      showToast('🖼️ Gambar diunggah & disisipkan!');
+    };
+  } catch (e) {
+    showToast('Gagal upload: ' + e.message, 'error');
+  } finally {
+    btn.textContent = '📁 Pilih Gambar'; btn.disabled = false;
+    input.value = '';
+  }
+}
+
+function compressImage(file, maxWidth = 1200, quality = 0.8) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const scale = Math.min(1, maxWidth / img.width);
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(resolve, 'image/webp', quality);
+    };
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+// ================== PUBLISH ARTIKEL ==================
+async function publishArticle() {
+  if (!settings.ghToken) return showToast('Atur GitHub Token dulu!', 'error');
+  
+  const p = gather();
+  if (!p.title || !p.content) return showToast('Judul dan konten wajib diisi!', 'error');
+  
+  const btn = $('btn-publish');
+  btn.disabled = true; btn.innerHTML = '⏳ Publishing...';
+  
+  try {
+    const isEdit = !!editingSlug;
+    
+    // 1. Simpan JSON
+    const existingJson = await ghGetFile(`posts/${p.slug}.json`);
+    await ghRequest(`posts/${p.slug}.json`, 'PUT', {
+      content: JSON.stringify(p, null, 2),
+      sha: existingJson ? existingJson.sha : undefined,
+      message: `${isEdit ? 'update' : 'add'} post: "${p.title}"`
+    });
+    
+    // 2. Generate HTML Statis
+    const htmlPath = `artikel/${p.slug}/index.html`;
+    const existingHtml = await ghGetFile(htmlPath);
+    await ghRequest(htmlPath, 'PUT', {
+      content: generateStaticHTML(p, 'post'),
+      sha: existingHtml ? existingHtml.sha : undefined,
+      message: `static html: ${p.slug}`
+    });
+    
+    // 3. Update index.json
+    const idxFile = await ghGetFile('posts/index.json');
+    let index = idxFile ? JSON.parse(idxFile.content) : [];
+    index = index.filter(x => x.slug !== p.slug);
+    index.push({
+      slug: p.slug, title: p.title, description: p.description,
+      aiSummary: p.aiSummary, date: p.date, author: p.author,
+      tags: p.tags, lang: p.lang, readingTime: p.readingTime,
+      url: `/${settings.ghRepo}/artikel/${p.slug}/`
+    });
+    await ghRequest('posts/index.json', 'PUT', {
+      content: JSON.stringify(index, null, 2),
+      sha: idxFile ? idxFile.sha : undefined,
+      message: `index: update (${index.length} artikel)`
+    });
+    
+    // 4. Update sitemap.xml
+    try {
+      const sitemap = await ghGetFile('sitemap.xml');
+      if (sitemap) {
+        let newContent = sitemap.content;
+        const url = `https://${settings.ghUser}.github.io/${settings.ghRepo}/artikel/${p.slug}/`;
+        const entry = `  <url><loc>${url}</loc><lastmod>${p.date}</lastmod><priority>0.8</priority></url>\n`;
+        if (!newContent.includes(url)) {
+          newContent = newContent.replace('</urlset>', `${entry}</urlset>`);
+          await ghRequest('sitemap.xml', 'PUT', { content: newContent, sha: sitemap.sha, message: 'sitemap: update' });
+        }
+      }
+    } catch (e) { console.warn('Sitemap skip:', e.message); }
+    
+    showToast(`🚀 Artikel dipublish ke URL statis!`);
+    window.confirmLeave = true;
+    editingSlug = null;
+    localStorage.removeItem('draft_article');
+    resetForm();
+    loadArticlesList();
+    switchTab('list');
+    
+  } catch (e) {
+    showToast('Gagal publish: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false; btn.innerHTML = '🚀 Publish Artikel';
+  }
+}
+
+// ================== PAGE (HALAMAN STATIS) ==================
+function updatePageSlug() {
+  const title = $('page-title').value;
+  const slug = title.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+  $('page-slug').value = slug;
+  $('page-slug-preview').textContent = '/halaman/' + (slug || 'halaman-baru');
+}
+
+function loadTemplate(type) {
+  const templates = {
+    privacy: {
+      title: "Kebijakan Privasi",
+      desc: "Kebijakan privasi Blog Soe terkait penggunaan data pengunjung dan cookie.",
+      content: `# Kebijakan Privasi\n\nDi Blog Soe, aksesibilitas di https://2026deepsoe.github.io/soe/ adalah prioritas utama kami. Dokumen Kebijakan Privasi ini berisi jenis informasi yang dikumpulkan dan dicatat oleh Blog Soe dan bagaimana kami menggunakannya.\n\n## Log Files\n\nBlog Soe menggunakan file log standar. File-file ini mencatat pengunjung saat mereka mengunjungi situs web. Informasi yang dikumpulkan termasuk alamat protokol internet (IP), jenis browser, penyedia layanan internet (ISP), stempel tanggal dan waktu, halaman rujukan/keluar, dan mungkin jumlah klik.\n\n## Cookies dan Web Beacons\n\nSeperti situs web lainnya, Blog Soe menggunakan 'cookie'. Cookie ini digunakan untuk menyimpan informasi termasuk preferensi pengunjung, dan halaman mana yang diakses atau dikunjungi pengunjung.\n\n## Google DoubleClick DART Cookie\n\nGoogle adalah salah satu vendor pihak ketiga di situs kami. Ia juga menggunakan cookie, yang dikenal sebagai cookie DART, untuk menayangkan iklan kepada pengunjung situs kami berdasarkan kunjungan mereka ke www.website.com dan situs lain di internet.\n\n## Persetujuan\n\nDengan menggunakan situs web kami, Anda dengan ini menyetujui kebijakan privasi kami dan menyetujui persyaratannya.`
+    },
+    disclaimer: {
+      title: "Disclaimer",
+      desc: "Disclaimer resmi Blog Soe.",
+      content: `# Disclaimer untuk Blog Soe\n\nSemua informasi di situs web ini - https://2026deepsoe.github.io/soe/ - diterbitkan dengan itikad baik dan untuk tujuan informasi umum. Blog Soe tidak membuat jaminan tentang kelengkapan, keandalan, dan keakuratan informasi ini. Tindakan apa pun yang Anda ambil atas informasi yang Anda temukan di situs web ini sepenuhnya merupakan risiko Anda sendiri.\n\n## Tautan Eksternal\n\nSitus web ini berisi tautan ke situs web eksternal. Kami tidak menjamin keakuratan informasi apa pun di situs web pihak ketiga.`
+    },
+    about: {
+      title: "Tentang Kami",
+      desc: "Tentang Blog Soe dan misi kami.",
+      content: `# Tentang Kami\n\nSelamat datang di Blog Soe!\n\nKami adalah platform blog yang didedikasikan untuk berbagi wawasan seputar teknologi, tutorial, dan pengembangan web.\n\n## Misi Kami\n\nMenyediakan sumber daya gratis dan berkualitas untuk developer Indonesia dan penggemar teknologi. Kami percaya bahwa pengetahuan harus dapat diakses oleh siapa saja.`
+    },
+    contact: {
+      title: "Hubungi Kami",
+      desc: "Informasi kontak Blog Soe.",
+      content: `# Hubungi Kami\n\nKami senang mendengar dari Anda! Jika Anda memiliki pertanyaan, saran, atau ingin berkolaborasi, silakan hubungi kami.\n\n## Email\n\nAnda dapat mengirim email ke: **admin@example.com**\n\nKami akan berusaha membalas pesan Anda dalam waktu 1-2 hari kerja.`
+    }
+  };
+  
+  const t = templates[type];
+  if (t) {
+    $('page-title').value = t.title;
+    $('page-desc').value = t.desc;
+    $('page-content').value = t.content;
+    updatePageSlug();
+    showToast(`Template ${t.title} dimuat`);
+  }
+}
+
+function wrapPage(before, after) {
+  const ta = $('page-content'), s = ta.selectionStart, e = ta.selectionEnd;
+  const sel = ta.value.slice(s, e) || 'teks';
+  ta.value = ta.value.slice(0, s) + before + sel + after + ta.value.slice(e);
+  ta.focus(); ta.setSelectionRange(s + before.length, s + before.length + sel.length);
+}
+function prefixPage(p) {
+  const ta = $('page-content'), s = ta.selectionStart;
+  const lineStart = ta.value.lastIndexOf('\n', s - 1) + 1;
+  ta.value = ta.value.slice(0, lineStart) + p + ta.value.slice(lineStart);
+  ta.focus();
+}
+
+async function publishPage() {
+  if (!settings.ghToken) return showToast('Atur GitHub Token dulu!', 'error');
+  
+  const title = $('page-title').value;
+  const slug = $('page-slug').value;
+  const content = $('page-content').value;
+  const desc = $('page-desc').value;
+  const date = $('page-date').value;
+  
+  if (!title || !content) return showToast('Judul dan konten wajib diisi!', 'error');
+  
+  const btn = $('btn-publish-page');
+  btn.disabled = true; btn.innerHTML = '⏳ Publishing...';
+  
+  try {
+    const pageData = { slug, title, description: desc, date, updated: new Date().toISOString().split('T')[0], content };
+    
+    // 1. Simpan JSON
+    const existingJson = await ghGetFile(`pages/${slug}.json`);
+    await ghRequest(`pages/${slug}.json`, 'PUT', {
+      content: JSON.stringify(pageData, null, 2),
+      sha: existingJson ? existingJson.sha : undefined,
+      message: `page: "${title}"`
+    });
+    
+    // 2. Generate HTML statis
+    const htmlPath = `halaman/${slug}/index.html`;
+    const existingHtml = await ghGetFile(htmlPath);
+    await ghRequest(htmlPath, 'PUT', {
+      content: generateStaticHTML(pageData, 'page'),
+      sha: existingHtml ? existingHtml.sha : undefined,
+      message: `static page: ${slug}`
+    });
+    
+    // 3. Update sitemap
+    try {
+      const sitemap = await ghGetFile('sitemap.xml');
+      if (sitemap) {
+        let newContent = sitemap.content;
+        const url = `https://${settings.ghUser}.github.io/${settings.ghRepo}/halaman/${slug}/`;
+        const entry = `  <url><loc>${url}</loc><lastmod>${date}</lastmod><priority>0.5</priority></url>\n`;
+        if (!newContent.includes(url)) {
+          newContent = newContent.replace('</urlset>', `${entry}</urlset>`);
+          await ghRequest('sitemap.xml', 'PUT', { content: newContent, sha: sitemap.sha, message: 'sitemap: update pages' });
+        }
+      }
+    } catch (e) { console.warn('Sitemap skip:', e.message); }
+    
+    showToast(`🚀 Halaman "${title}" dipublish!`);
+    $('page-title').value = ''; $('page-slug').value = ''; $('page-content').value = ''; $('page-desc').value = '';
+  } catch (e) {
+    showToast('Gagal publish: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false; btn.innerHTML = '🚀 Publish Halaman';
+  }
+}
+
+// ================== ADSENSE ==================
+async function saveAdSense() {
+  const clientId = $('adsense-id').value.trim();
+  const customScript = $('adsense-script').value.trim();
+  
+  if (!clientId) return showToast('Client ID AdSense wajib diisi', 'error');
+  if (!settings.ghToken) return showToast('Atur GitHub Token dulu!', 'error');
+  
+  const btn = $('btn-adsense');
+  btn.disabled = true; btn.innerHTML = '⏳ Menerapkan...';
+  
+  const adsenseTag = customScript || `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${clientId}" crossorigin="anonymous"></script>`;
+  
+  const filesToUpdate = ['index.html', 'post.html', 'page.html'];
+  
+  try {
+    for (const file of filesToUpdate) {
+      const ghFile = await ghGetFile(file);
+      if (!ghFile) continue;
+      
+      let content = ghFile.content;
+      content = content.replace(/<script async src="https:\/\/pagead2\.googlesyndication\.com[^>]+><\/script>/gi, '');
+      
+      if (content.includes('</head>')) {
+        content = content.replace('</head>', `\n<!-- Google AdSense -->\n${adsenseTag}\n</head>`);
+        await ghRequest(file, 'PUT', {
+          content: content,
+          sha: ghFile.sha,
+          message: `adsense: inject to ${file}`
+        });
+      }
+    }
+    
+    localStorage.setItem('adsense_id', clientId);
+    localStorage.setItem('adsense_script', customScript);
+    showToast('✅ AdSense berhasil diterapkan!');
+  } catch (e) {
+    showToast('Gagal: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false; btn.innerHTML = '💾 Simpan & Terapkan Kode';
+  }
+}
+
 // ================== FORM UTILS ==================
 function updateSlug() {
+  if (editingSlug) return;
   const title = $('title').value;
   const slug = title.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
   $('slug').value = slug;
-  $('slug-preview').textContent = '/' + (slug || 'judul-artikel');
+  $('slug-preview').textContent = '/artikel/' + (slug || 'judul-artikel');
 }
 
 function gather() {
   const md = $('content').value;
   return {
     slug: $('slug').value, title: $('title').value, description: $('description').value,
-    aiSummary: AISEO.summary(md), date: $('date').value, updated: $('date').value,
+    aiSummary: AISEO.summary(md), date: $('date').value, updated: new Date().toISOString().split('T')[0],
     author: $('author').value, tags: $('tags').value.split(',').map(t => t.trim()).filter(Boolean),
-    category: 'Umum', lang: 'id-ID', content: md,
+    category: 'Umum', lang: $('lang').value, content: md,
     faqs: AISEO.extractFAQs(md), steps: AISEO.extractSteps(md),
     readingTime: AISEO.readingTime(md), wordCount: AISEO.stripMd(md).split(/\s+/).filter(Boolean).length
   };
 }
 
 function resetForm() {
+  editingSlug = null;
+  $('editor-title').textContent = 'Tulis Artikel Baru';
+  $('edit-mode-badge').classList.add('hidden');
   $('title').value = ''; $('slug').value = ''; $('slug-preview').textContent = '/artikel-baru';
   $('content').value = ''; $('description').value = ''; $('tags').value = '';
-  $('preview').innerHTML = ''; updateStats();
+  $('lang').value = 'id-ID'; $('preview').innerHTML = ''; $('desc-count').textContent = '0 / 160';
+  updateStats();
 }
 
 function wrap(before, after) {
@@ -567,12 +1193,20 @@ function updateStats() {
   $('stat-words').textContent = AISEO.stripMd(md).split(/\s+/).filter(Boolean).length;
   $('stat-read').textContent = AISEO.readingTime(md);
   $('stat-faq').textContent = AISEO.extractFAQs(md).length;
+  $('stat-steps').textContent = (AISEO.extractSteps(md) || []).length;
 }
 function generatePost() {
   const p = gather();
   alert('JSON siap (bisa di-copy dari console):\n\n' + JSON.stringify(p, null, 2));
   console.log(p);
 }
+
+// Prevent leave
+window.addEventListener('beforeunload', (e) => {
+  if (currentTab === 'new' && $('content').value.trim() && !window.confirmLeave) {
+    e.preventDefault(); e.returnValue = '';
+  }
+});
 </script>
 </body>
 </html>

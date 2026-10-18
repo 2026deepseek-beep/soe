@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Memuat... — Blog Soe</title>
+<meta name="description" id="meta-desc" content="">
+<meta name="robots" content="index, follow">
+<link rel="canonical" id="canonical" href="">
+<link rel="stylesheet" href="assets/style.css">
+
+<!-- Google AdSense Script (Ganti ca-pub-XXXXXX dengan ID Anda) -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+</head>
+<body>
+<header class="site-header">
+  <div class="container-blog flex justify-between items-center py-3.5">
+    <a href="./" class="logo">📝 Blog Soe</a>
+    <nav><a href="./" class="nav-link">← Kembali ke Home</a></nav>
+  </div>
+</header>
+<main class="container-blog">
+  <article id="article" class="my-10 mb-20"><div class="loading">Memuat halaman...</div></article>
+</main>
+<footer class="site-footer">
+  <div class="container-blog flex flex-col items-center gap-2">
+    <p>&copy; <span id="year"></span> Blog Soe.</p>
+    <div class="flex gap-4 text-xs">
+      <a href="page.html?slug=about" class="hover:text-accent">About</a>
+      <a href="page.html?slug=contact" class="hover:text-accent">Contact</a>
+      <a href="page.html?slug=privacy-policy" class="hover:text-accent">Privacy</a>
+      <a href="page.html?slug=disclaimer" class="hover:text-accent">Disclaimer</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Script khusus render halaman statis
+(async () => {
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const slug = new URLSearchParams(location.search).get('slug');
+  const c = document.getElementById('article');
+  
+  if (!slug) { c.innerHTML = '<div class="error">Halaman tidak ditemukan.</div>'; return; }
+
+  try {
+    const res = await fetch(`./pages/${slug}.json`);
+    if (!res.ok) throw new Error('Halaman tidak ditemukan');
+    const page = await res.json();
+
+    document.title = `${page.title} — Blog Soe`;
+    document.getElementById('meta-desc').setAttribute('content', page.description);
+    document.getElementById('canonical').setAttribute('href', location.href);
+
+    c.innerHTML = `
+      <nav class="breadcrumb"><a href="./">Home</a> / <span>${page.title}</span></nav>
+      <h1 class="article-title">${page.title}</h1>
+      <div class="article-meta">
+        <span>📅 Update: ${page.updated || page.date}</span>
+      </div>
+      <div class="article-content" id="page-content"></div>
+    `;
+    
+    // Render konten (menggunakan parser MD dari assets/markdown.js)
+    const script = document.createElement('script');
+    script.src = 'assets/markdown.js';
+    script.onload = () => {
+      document.getElementById('page-content').innerHTML = MD.parse(page.content);
+    };
+    document.head.appendChild(script);
+
+  } catch (err) {
+    c.innerHTML = `<div class="error">${err.message}</div>`;
+  }
+})();
+</script>
+</body>
+</html>
