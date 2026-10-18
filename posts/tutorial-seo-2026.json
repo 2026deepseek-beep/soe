@@ -1,27 +1,21 @@
 {
   "slug": "tutorial-seo-2026",
   "title": "Panduan SEO 2026 untuk Blogger Pemula",
-  "description": "Strategi SEO 2026 termasuk AI Search Optimization (AEO/GEO) agar artikel rangking di Google AI Overview, ChatGPT, dan Perplexity.",
-  "aiSummary": "SEO 2026 harus dioptimasi untuk mesin pencari tradisional DAN AI chatbot. Fokus pada E-E-A-T, structured data, dan file llms.txt untuk visibilitas di AI Overview.",
+  "description": "Strategi SEO 2026 termasuk AI Search Optimization.",
+  "aiSummary": "SEO 2026 harus dioptimasi untuk mesin pencari tradisional DAN AI chatbot.",
   "date": "2026-01-15",
   "updated": "2026-01-20",
   "author": "Admin",
   "category": "SEO",
   "lang": "id-ID",
-  "tags": ["seo", "tutorial", "ai-search"],
+  "tags": ["seo", "tutorial"],
   "readingTime": 5,
-  "wordCount": 412,
-  "content": "# Panduan SEO 2026 untuk Blogger Pemula\n\nSEO di tahun 2026 bukan lagi sekadar keyword dan backlink. Kini Anda harus dioptimasi untuk **dua dunia**: mesin pencari klasik (Google) dan **AI Search** (ChatGPT, Perplexity, Google AI Overview, Gemini).\n\n> Konten adalah raja, tapi **konteks untuk AI** adalah ratunya.\n\n## 1. Fokus pada E-E-A-T\n\nGoogle semakin menghargai Experience, Expertise, Authoritativeness, dan Trustworthiness. Tunjukkan pengalaman nyata di setiap artikel.\n\n- Tulis dari pengalaman pribadi\n- Sertakan contoh konkret\n- Cantumkan sumber terpercaya\n\n## 2. Optimasi Core Web Vitals\n\nPastikan LCP < 2.5s, INP < 200ms, dan CLS < 0.1. Gunakan CSS inline dan hindari CDN eksternal.\n\n## 3. Structured Data Wajib\n\nSelalu tambahkan schema JSON-LD:\n\n- `BlogPosting` untuk artikel\n- `FAQPage` untuk tanya jawab\n- `HowTo` untuk tutorial\n- `BreadcrumbList` untuk navigasi\n\n## 4. AI Search Optimization (AEO/GEO)\n\nIni yang membedakan SEO 2026 dari tahun-tahun sebelumnya:\n\n| Elemen | Fungsi |\n|--------|--------|\n| `llms.txt` | Panduan untuk AI crawler |\n| `llms-full.txt` | Konten lengkap untuk AI |\n| TL;DR summary | Kutipan langsung AI |\n| FAQ Schema | Snippet AI Overview |\n\n## Apa itu SEO AI?\n\nSEO AI adalah praktik optimasi konten agar mudah dipahami, dikutip, dan direkomendasikan oleh model bahasa besar seperti ChatGPT, Claude, dan Perplexity.\n\n## Bagaimana cara kerja llms.txt?\n\nFile `llms.txt` di root website berisi ringkasan situs dan daftar artikel penting, membantu AI crawler memahami struktur konten Anda tanpa scraping HTML penuh.\n\n## Mengapa struktur data penting untuk AI?\n\nStructured data membantu AI mengekstrak entitas, hubungan, dan fakta dari artikel Anda, sehingga lebih mungkin dikutip dalam jawaban AI.\n\n## 5. Mobile First & Kecepatan\n\nLebih dari 70% traffic berasal dari mobile. Desain responsif bukan opsional. Targetkan skor Lighthouse 95+.\n\n## Kesimpulan\n\nSEO 2026 = SEO klasik + AI Search Optimization. Fokus pada konten berkualitas, struktur data, dan file `llms.txt`.\n",
+  "wordCount": 100,
+  "content": "# Panduan SEO 2026\n\nSEO di tahun 2026 bukan lagi sekadar keyword dan backlink. Kini Anda harus dioptimasi untuk **dua dunia**: mesin pencari klasik (Google) dan **AI Search**.\n\n## 1. Fokus pada E-E-A-T\n\nGoogle semakin menghargai Experience, Expertise, Authoritativeness, dan Trustworthiness.\n\n## Apa itu SEO AI?\n\nSEO AI adalah praktik optimasi konten agar mudah dipahami, dikutip, dan direkomendasikan oleh model bahasa besar seperti ChatGPT.\n\n> Konten adalah raja, tapi **konteks untuk AI** adalah ratunya.\n",
   "faqs": [
-    {"q": "Apa itu SEO AI?", "a": "SEO AI adalah praktik optimasi konten agar mudah dipahami, dikutip, dan direkomendasikan oleh model bahasa besar."},
-    {"q": "Bagaimana cara kerja llms.txt?", "a": "File llms.txt di root website berisi ringkasan situs dan daftar artikel penting untuk AI crawler."},
-    {"q": "Mengapa struktur data penting untuk AI?", "a": "Structured data membantu AI mengekstrak entitas dan fakta, sehingga lebih mungkin dikutip."}
+    {"q": "Apa itu SEO AI?", "a": "SEO AI adalah praktik optimasi konten agar mudah dipahami, dikutip, dan direkomendasikan oleh model bahasa besar."}
   ],
   "steps": [
-    {"name": "Fokus pada E-E-A-T", "text": "Tunjukkan pengalaman nyata, keahlian, otoritas, dan kepercayaan."},
-    {"name": "Optimasi Core Web Vitals", "text": "LCP < 2.5s, INP < 200ms, CLS < 0.1."},
-    {"name": "Structured Data Wajib", "text": "Tambahkan BlogPosting, FAQPage, HowTo, BreadcrumbList."},
-    {"name": "AI Search Optimization", "text": "Sediakan llms.txt, llms-full.txt, TL;DR summary, FAQ Schema."},
-    {"name": "Mobile First & Kecepatan", "text": "Desain responsif dan skor Lighthouse 95+."}
+    {"name": "Fokus pada E-E-A-T", "text": "Tunjukkan pengalaman nyata."}
   ]
 }

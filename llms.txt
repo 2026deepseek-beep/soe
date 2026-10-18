@@ -1,17 +1,7 @@
-# Blog Saya
+# Blog Soe
 
-> Blog sederhana berisi artikel teknologi, tutorial coding, tips SEO, dan panduan developer Indonesia. Konten ditulis dalam Bahasa Indonesia dengan fokus praktik terbaik web modern 2026.
-
-## About
-- Author: Admin
-- Language: id-ID
-- License: CC BY 4.0
+> Blog sederhana berisi artikel teknologi, tutorial coding, tips SEO, dan panduan developer Indonesia.
 
 ## Articles
 
-- [Panduan SEO 2026 untuk Blogger Pemula](https://2026deepsoe.github.io/soe/post.html?slug=tutorial-seo-2026): Strategi SEO 2026 termasuk AI Search Optimization untuk rangking di Google AI Overview dan ChatGPT.
-
-## Optional
-- [Sitemap](https://2026deepsoe.github.io/soe/sitemap.xml)
-- [JSON Feed](https://2026deepsoe.github.io/soe/feed.json)
-- [Full Content](https://2026deepsoe.github.io/soe/llms-full.txt)
+- [Panduan SEO 2026 untuk Blogger Pemula](https://2026deepsoe.github.io/soe/post.html?slug=tutorial-seo-2026): Strategi SEO 2026 termasuk AI Search Optimization.

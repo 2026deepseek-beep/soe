@@ -1,19 +1,16 @@
 {
   "version": "https://jsonfeed.org/version/1.1",
-  "title": "Blog Saya",
+  "title": "Blog Soe",
   "home_page_url": "https://2026deepsoe.github.io/soe/",
   "feed_url": "https://2026deepsoe.github.io/soe/feed.json",
-  "description": "Artikel teknologi & tutorial coding Bahasa Indonesia",
-  "language": "id-ID",
-  "authors": [{"name": "Admin"}],
   "items": [
     {
       "id": "https://2026deepsoe.github.io/soe/post.html?slug=tutorial-seo-2026",
       "url": "https://2026deepsoe.github.io/soe/post.html?slug=tutorial-seo-2026",
       "title": "Panduan SEO 2026 untuk Blogger Pemula",
-      "summary": "Strategi SEO 2026 termasuk AI Search Optimization untuk rangking di Google AI Overview.",
+      "summary": "Strategi SEO 2026 termasuk AI Search Optimization.",
       "date_published": "2026-01-15T00:00:00+07:00",
-      "tags": ["seo", "tutorial", "ai-search"],
+      "tags": ["seo", "tutorial"],
       "author": {"name": "Admin"}
     }
   ]

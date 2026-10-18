@@ -1,12 +1,9 @@
-# Blog Saya — Full Content
+# Blog Soe — Full Content
 
 ## Panduan SEO 2026 untuk Blogger Pemula
 
 URL: https://2026deepsoe.github.io/soe/post.html?slug=tutorial-seo-2026
 Tanggal: 2026-01-15
 Author: Admin
-Tags: seo, tutorial, ai-search
 
 SEO di tahun 2026 bukan lagi sekadar keyword dan backlink. Kini Anda harus dioptimasi untuk dua dunia: mesin pencari klasik dan AI Search. Fokus pada E-E-A-T, structured data, dan file llms.txt untuk visibilitas di AI Overview.
-
----
