@@ -12,6 +12,8 @@
   .dark .sidebar::-webkit-scrollbar-thumb { background: #475569; }
   .ai-loading { pointer-events: none; opacity: 0.7; }
   .ai-loading::after { content: ' ⏳'; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 overflow-hidden h-screen flex">
@@ -55,7 +57,7 @@
 <main class="flex-1 h-full overflow-y-auto bg-slate-50 dark:bg-slate-900 p-6 lg:p-10 relative">
   
   <!-- ================= DASHBOARD ================= -->
-  <div id="tab-dashboard" class="tab-content block max-w-6xl mx-auto">
+  <div id="tab-dashboard" class="tab-content active max-w-6xl mx-auto">
     <h1 class="text-2xl font-bold mb-6 text-slate-900 dark:text-slate-100">Dashboard</h1>
     
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
@@ -80,8 +82,8 @@
     <div class="bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-xl p-6 text-white shadow-md mb-8 flex justify-between items-center">
       <div>
         <h2 class="text-xl font-bold mb-1">SEO Analytics (GoatCounter)</h2>
-        <p class="text-sm text-violet-100 opacity-90 mb-4">Pantau performa artikel Anda secara real-time tanpa membebani browser.</p>
-        <a href="https://YOUR_SUBDOMAIN.goatcounter.com" target="_blank" class="btn bg-white text-violet-600 hover:bg-slate-100">📈 Buka Analytics Dashboard →</a>
+        <p class="text-sm text-violet-100 opacity-90 mb-4">Pantau performa artikel Anda secara real-time.</p>
+        <a href="https://YOUR_SUBDOMAIN.goatcounter.com" target="_blank" class="btn bg-white text-violet-600 hover:bg-slate-100">📈 Buka Analytics →</a>
       </div>
       <div class="text-6xl opacity-30">📊</div>
     </div>
@@ -90,13 +92,14 @@
     <div class="flex flex-wrap gap-3">
       <button onclick="switchTab('new')" class="btn">✍️ Tulis Artikel Baru</button>
       <button onclick="switchTab('pages')" class="btn btn-ghost">📄 Kelola Halaman</button>
+      <button onclick="switchTab('adsense')" class="btn btn-ghost">💰 Setup AdSense</button>
       <button onclick="loadArticlesList()" class="btn btn-ghost">🔄 Refresh Data</button>
       <a href="./" target="_blank" class="btn btn-ghost">🌐 Lihat Website</a>
     </div>
   </div>
 
   <!-- ================= EDITOR ARTIKEL ================= -->
-  <div id="tab-new" class="tab-content hidden max-w-7xl mx-auto">
+  <div id="tab-new" class="tab-content max-w-7xl mx-auto">
     <div class="flex justify-between items-center mb-5">
       <div class="flex items-center gap-3">
         <h1 id="editor-title" class="text-2xl font-bold text-slate-900 dark:text-slate-100">Tulis Artikel Baru</h1>
@@ -115,7 +118,7 @@
           <input id="title" type="text" placeholder="Judul Artikel..." class="w-full text-2xl font-bold bg-transparent border-none focus:outline-none text-slate-900 dark:text-slate-100 placeholder-slate-400 mb-2" oninput="updateSlug()">
           <div class="flex items-center gap-2 text-sm text-slate-500">
             <span>URL:</span>
-            <span id="slug-preview" class="font-mono bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded text-accent">/artikel-baru</span>
+            <span id="slug-preview" class="font-mono bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded text-accent">/artikel/artikel-baru/</span>
           </div>
         </div>
 
@@ -196,7 +199,7 @@
   </div>
 
   <!-- ================= LIST ARTIKEL ================= -->
-  <div id="tab-list" class="tab-content hidden max-w-6xl mx-auto">
+  <div id="tab-list" class="tab-content max-w-6xl mx-auto">
     <div class="flex justify-between items-center mb-5">
       <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Kelola Artikel</h1>
       <button onclick="loadArticlesList()" class="btn btn-ghost text-sm">🔄 Refresh</button>
@@ -215,8 +218,8 @@
     </div>
   </div>
 
-  <!-- ================= HALAMAN STATIS ================= -->
-  <div id="tab-pages" class="tab-content hidden max-w-5xl mx-auto">
+  <!-- ================= HALAMAN STATIS (PAGES) ================= -->
+  <div id="tab-pages" class="tab-content max-w-5xl mx-auto">
     <h1 class="text-2xl font-bold mb-2 text-slate-900 dark:text-slate-100">Halaman Statis (AdSense Ready)</h1>
     <p class="text-sm text-slate-500 mb-5">Buat halaman syarat AdSense: About, Contact, Privacy Policy, Disclaimer.</p>
     
@@ -226,7 +229,7 @@
           <input id="page-title" type="text" placeholder="Judul Halaman (misal: Privacy Policy)..." class="w-full text-xl font-bold bg-transparent border-none focus:outline-none text-slate-900 dark:text-slate-100 placeholder-slate-400" oninput="updatePageSlug()">
           <div class="flex items-center gap-2 text-sm text-slate-500 mt-2">
             <span>URL:</span>
-            <span id="page-slug-preview" class="font-mono bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded text-accent">/halaman/privacy-policy</span>
+            <span id="page-slug-preview" class="font-mono bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded text-accent">/halaman/privacy-policy/</span>
           </div>
         </div>
         
@@ -271,7 +274,7 @@
   </div>
 
   <!-- ================= ADSENSE SETUP ================= -->
-  <div id="tab-adsense" class="tab-content hidden max-w-3xl mx-auto">
+  <div id="tab-adsense" class="tab-content max-w-3xl mx-auto">
     <h1 class="text-2xl font-bold mb-5 text-slate-900 dark:text-slate-100">💰 AdSense Setup</h1>
     <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-5">
       <p class="text-sm text-slate-500 mb-4">Simpan kode script AdSense Anda di sini. Kode ini akan otomatis dimasukkan ke file <code>index.html</code>, <code>post.html</code>, dan <code>page.html</code>.</p>
@@ -292,7 +295,7 @@
   </div>
 
   <!-- ================= PENGATURAN ================= -->
-  <div id="tab-settings" class="tab-content hidden max-w-2xl mx-auto">
+  <div id="tab-settings" class="tab-content max-w-2xl mx-auto">
     <h1 class="text-2xl font-bold mb-5 text-slate-900 dark:text-slate-100">Pengaturan</h1>
     
     <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-5 mb-6">
@@ -318,7 +321,7 @@
 
     <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-5">
       <h2 class="font-bold text-lg border-b pb-2 mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">🤖 AI Assistant (OpenAI)</h2>
-      <p class="text-xs text-slate-500 mb-4">Dapatkan API Key di <a href="https://platform.openai.com/api-keys" target="_blank" class="text-accent underline">platform.openai.com</a>. Key disimpan di browser Anda.</p>
+      <p class="text-xs text-slate-500 mb-4">Dapatkan API Key di <a href="https://platform.openai.com/api-keys" target="_blank" class="text-accent underline">platform.openai.com</a>.</p>
       <div>
         <label class="block font-semibold text-sm mb-1.5">OpenAI API Key</label>
         <input id="openai-key" type="password" class="form-input" placeholder="sk-...">
@@ -371,7 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
   $('openai-key').value = settings.openaiKey;
   $('openai-model').value = settings.openaiModel;
   
-  // Load AdSense settings
   $('adsense-id').value = localStorage.getItem('adsense_id') || '';
   $('adsense-script').value = localStorage.getItem('adsense_script') || '';
 
@@ -385,7 +387,6 @@ document.addEventListener('DOMContentLoaded', () => {
     $('gh-status').classList.add('text-amber-500');
   }
 
-  // Auto-save draft ke localStorage
   setInterval(() => {
     if (currentTab === 'new' && ($('title').value || $('content').value)) {
       localStorage.setItem('draft_article', JSON.stringify({
@@ -396,7 +397,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 5000);
 
-  // Desc counter
   $('description')?.addEventListener('input', e => {
     $('desc-count').textContent = `${e.target.value.length} / 160`;
   });
@@ -413,9 +413,8 @@ function switchTab(tab) {
   window.confirmLeave = false;
 
   currentTab = tab;
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-  $('tab-' + tab).classList.remove('hidden');
-  $('tab-' + tab).classList.add('block');
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  $('tab-' + tab).classList.add('active');
   updateNavStyles();
   
   if (tab === 'list') loadArticlesList();
@@ -675,16 +674,13 @@ async function bulkDelete() {
   
   try {
     for (const slug of selectedSlugs) {
-      // Hapus JSON
       const file = await ghGetFile(`posts/${slug}.json`);
       if (file) await ghDelete(`posts/${slug}.json`, file.sha, `bulk delete: ${slug}`);
       
-      // Hapus HTML statis
       const html = await ghGetFile(`artikel/${slug}/index.html`);
       if (html) await ghDelete(`artikel/${slug}/index.html`, html.sha, `delete html: ${slug}`);
     }
     
-    // Update index.json
     const idxFile = await ghGetFile('posts/index.json');
     const index = JSON.parse(idxFile.content).filter(x => !selectedSlugs.has(x.slug));
     await ghRequest('posts/index.json', 'PUT', {
@@ -716,7 +712,7 @@ async function editArticle(slug) {
     
     $('title').value = post.title;
     $('slug').value = post.slug;
-    $('slug-preview').textContent = '/artikel/' + post.slug;
+    $('slug-preview').textContent = '/artikel/' + post.slug + '/';
     $('content').value = post.content;
     $('description').value = post.description;
     $('tags').value = (post.tags || []).join(', ');
@@ -734,15 +730,12 @@ async function editArticle(slug) {
 async function deleteArticle(slug) {
   if (!confirm(`Yakin mau hapus artikel "${slug}"?`)) return;
   try {
-    // Hapus JSON
     const file = await ghGetFile(`posts/${slug}.json`);
     if (file) await ghDelete(`posts/${slug}.json`, file.sha, `delete: ${slug}`);
     
-    // Hapus HTML statis
     const html = await ghGetFile(`artikel/${slug}/index.html`);
     if (html) await ghDelete(`artikel/${slug}/index.html`, html.sha, `delete html: ${slug}`);
     
-    // Update index
     const idxFile = await ghGetFile('posts/index.json');
     const index = JSON.parse(idxFile.content).filter(x => x.slug !== slug);
     await ghRequest('posts/index.json', 'PUT', {
@@ -919,7 +912,6 @@ async function publishArticle() {
   try {
     const isEdit = !!editingSlug;
     
-    // 1. Simpan JSON
     const existingJson = await ghGetFile(`posts/${p.slug}.json`);
     await ghRequest(`posts/${p.slug}.json`, 'PUT', {
       content: JSON.stringify(p, null, 2),
@@ -927,7 +919,6 @@ async function publishArticle() {
       message: `${isEdit ? 'update' : 'add'} post: "${p.title}"`
     });
     
-    // 2. Generate HTML Statis
     const htmlPath = `artikel/${p.slug}/index.html`;
     const existingHtml = await ghGetFile(htmlPath);
     await ghRequest(htmlPath, 'PUT', {
@@ -936,7 +927,6 @@ async function publishArticle() {
       message: `static html: ${p.slug}`
     });
     
-    // 3. Update index.json
     const idxFile = await ghGetFile('posts/index.json');
     let index = idxFile ? JSON.parse(idxFile.content) : [];
     index = index.filter(x => x.slug !== p.slug);
@@ -952,7 +942,6 @@ async function publishArticle() {
       message: `index: update (${index.length} artikel)`
     });
     
-    // 4. Update sitemap.xml
     try {
       const sitemap = await ghGetFile('sitemap.xml');
       if (sitemap) {
@@ -986,7 +975,7 @@ function updatePageSlug() {
   const title = $('page-title').value;
   const slug = title.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
   $('page-slug').value = slug;
-  $('page-slug-preview').textContent = '/halaman/' + (slug || 'halaman-baru');
+  $('page-slug-preview').textContent = '/halaman/' + (slug || 'halaman-baru') + '/';
 }
 
 function loadTemplate(type) {
@@ -1053,7 +1042,6 @@ async function publishPage() {
   try {
     const pageData = { slug, title, description: desc, date, updated: new Date().toISOString().split('T')[0], content };
     
-    // 1. Simpan JSON
     const existingJson = await ghGetFile(`pages/${slug}.json`);
     await ghRequest(`pages/${slug}.json`, 'PUT', {
       content: JSON.stringify(pageData, null, 2),
@@ -1061,7 +1049,6 @@ async function publishPage() {
       message: `page: "${title}"`
     });
     
-    // 2. Generate HTML statis
     const htmlPath = `halaman/${slug}/index.html`;
     const existingHtml = await ghGetFile(htmlPath);
     await ghRequest(htmlPath, 'PUT', {
@@ -1070,7 +1057,6 @@ async function publishPage() {
       message: `static page: ${slug}`
     });
     
-    // 3. Update sitemap
     try {
       const sitemap = await ghGetFile('sitemap.xml');
       if (sitemap) {
@@ -1142,7 +1128,7 @@ function updateSlug() {
   const title = $('title').value;
   const slug = title.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
   $('slug').value = slug;
-  $('slug-preview').textContent = '/artikel/' + (slug || 'judul-artikel');
+  $('slug-preview').textContent = '/artikel/' + (slug || 'judul-artikel') + '/';
 }
 
 function gather() {
@@ -1161,7 +1147,7 @@ function resetForm() {
   editingSlug = null;
   $('editor-title').textContent = 'Tulis Artikel Baru';
   $('edit-mode-badge').classList.add('hidden');
-  $('title').value = ''; $('slug').value = ''; $('slug-preview').textContent = '/artikel-baru';
+  $('title').value = ''; $('slug').value = ''; $('slug-preview').textContent = '/artikel/artikel-baru/';
   $('content').value = ''; $('description').value = ''; $('tags').value = '';
   $('lang').value = 'id-ID'; $('preview').innerHTML = ''; $('desc-count').textContent = '0 / 160';
   updateStats();
@@ -1201,7 +1187,6 @@ function generatePost() {
   console.log(p);
 }
 
-// Prevent leave
 window.addEventListener('beforeunload', (e) => {
   if (currentTab === 'new' && $('content').value.trim() && !window.confirmLeave) {
     e.preventDefault(); e.returnValue = '';
