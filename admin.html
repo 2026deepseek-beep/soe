@@ -1000,7 +1000,10 @@ async function publishPage() {
 function updateSlug() {
   if (editingSlug) return;
   const title = $('title').value;
-  const slug = title.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+  const slug = title.toLowerCase().trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
   $('slug').value = slug;
   $('slug-preview').textContent = '/artikel/' + (slug || 'judul-artikel') + '/';
 }
