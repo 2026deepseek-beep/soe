@@ -462,6 +462,8 @@ function generateStaticHTML(post, type = 'post') {
     "name": post.title, "description": post.description, "url": canonical
   } : AISEO.articleSchema(post, post.slug);
 
+  const scriptClose = '</scr' + 'ipt>';
+
   return `<!DOCTYPE html>
 <html lang="${post.lang || 'id-ID'}">
 <head>
@@ -517,8 +519,8 @@ ${!isPage ? `<link rel="alternate" hreflang="${post.lang || 'id-ID'}" href="${ca
     </div>
   </div>
 </footer>
-<script src="${baseUrl}/assets/markdown.js"></scr` + `ipt>
-<script>document.getElementById('static-content').innerHTML = MD.parse(${JSON.stringify(post.content)});</scr` + `ipt>
+<script src="${baseUrl}/assets/markdown.js">${scriptClose}
+<script>document.getElementById('static-content').innerHTML = MD.parse(${JSON.stringify(post.content)});${scriptClose}
 </body>
 </html>`;
 }
