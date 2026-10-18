@@ -3,36 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mengalihkan...</title>
-<meta name="robots" content="noindex, follow">
-<script>
-  // Redirect otomatis dari post.html?slug=xxx ke /artikel/xxx/
-  const urlParams = new URLSearchParams(window.location.search);
-  const slug = urlParams.get('slug');
-  if (slug) {
-    // Ganti '/soe/' dengan nama repo Anda jika berbeda
-    window.location.replace(`/soe/artikel/${slug}/`);
-  } else {
-    window.location.replace(`/soe/`);
-  }
-</script>
+<title>Memuat... — Blog Soe</title>
+<meta name="description" id="meta-desc" content="">
+<meta name="robots" content="index, follow">
+<link rel="canonical" id="canonical" href="">
+<link rel="stylesheet" href="assets/style.css">
 </head>
-<footer class="site-footer">
-  <div class="container-blog flex flex-col items-center gap-2">
-    <p>&copy; <span id="year"></span> Blog Soe.</p>
-    <div class="flex gap-4 text-xs">
-      <a href="page.html?slug=about" class="hover:text-accent">About</a>
-      <a href="page.html?slug=contact" class="hover:text-accent">Contact</a>
-      <a href="page.html?slug=privacy-policy" class="hover:text-accent">Privacy</a>
-      <a href="page.html?slug=disclaimer" class="hover:text-accent">Disclaimer</a>
-    </div>
-  </div>
-</footer>
 <body>
-<p>Mengalihkan ke halaman artikel... <a id="link" href="/soe/">Klik di sini jika tidak teralihkan</a>.</p>
-<script>
-  const s = new URLSearchParams(window.location.search).get('slug');
-  if(s) document.getElementById('link').href = `/soe/artikel/${s}/`;
-</script>
+<header class="site-header">
+  <div class="container-blog flex justify-between items-center py-3.5">
+    <a href="./" class="logo">📝 Blog Soe</a>
+    <nav><a href="./" class="nav-link">← Kembali</a></nav>
+  </div>
+</header>
+<main class="container-blog">
+  <article id="article" class="my-10 mb-20"><div class="loading">Memuat artikel...</div></article>
+</main>
+<footer class="site-footer">
+  <div class="container-blog"><p>&copy; <span id="year"></span> Blog Soe.</p></div>
+</footer>
+<script src="assets/markdown.js"></script>
+<script src="assets/ai-seo.js"></script>
+<script src="assets/app.js"></script>
 </body>
 </html>
