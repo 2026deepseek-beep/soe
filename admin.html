@@ -3,86 +3,544 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin CMS — Blog Soe</title>
+<title>CMS Dashboard — Blog Soe</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="assets/style.css">
+<style>
+  /* Custom scrollbar untuk sidebar */
+  .sidebar::-webkit-scrollbar { width: 6px; }
+  .sidebar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  .dark .sidebar::-webkit-scrollbar-thumb { background: #475569; }
+</style>
 </head>
-<body>
-<header class="site-header">
-  <div class="container-blog flex justify-between items-center py-3.5" style="max-width:72rem">
-    <a href="./" class="logo">📝 Blog Soe</a>
-    <nav><a href="./" class="nav-link">← Lihat Blog</a></nav>
+<body class="bg-slate-50 dark:bg-slate-900 overflow-hidden h-screen flex">
+
+<!-- SIDEBAR -->
+<aside class="sidebar w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 h-full flex flex-col z-20">
+  <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+    <a href="./" class="font-bold text-lg text-slate-900 dark:text-slate-100">📝 Blog Soe</a>
+    <span class="text-[10px] bg-accent text-white px-2 py-0.5 rounded-full font-bold">CMS</span>
   </div>
-</header>
-<main class="admin-container">
-  <h1 class="text-3xl font-bold mb-2">🛠️ CMS Admin <span class="ai-badge">AI SEO Ready</span></h1>
-  <p class="text-slate-500 dark:text-slate-400 text-sm mb-5">Tulis artikel pakai Markdown. Sistem otomatis generate JSON, FAQ Schema, HowTo Schema.</p>
-  <div class="tabs">
-    <button class="tab active" data-panel="editor">✍️ Editor</button>
-    <button class="tab" data-panel="meta">🔍 SEO Meta</button>
-    <button class="tab" data-panel="output">📦 Output JSON</button>
+  
+  <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+    <button onclick="switchTab('dashboard')" class="nav-btn active w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors">
+      <span>📊</span> Dashboard
+    </button>
+    <button onclick="switchTab('new')" class="nav-btn w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors">
+      <span>✍️</span> Tulis Artikel
+    </button>
+    <button onclick="switchTab('list')" class="nav-btn w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors">
+      <span>📚</span> Kelola Artikel
+    </button>
+    <button onclick="switchTab('settings')" class="nav-btn w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors">
+      <span>⚙️</span> Pengaturan
+    </button>
+  </nav>
+
+  <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+    <div id="connection-status" class="text-xs flex items-center gap-2 text-slate-500 dark:text-slate-400">
+      <span class="w-2 h-2 rounded-full bg-slate-300"></span> Belum terhubung
+    </div>
   </div>
-  <div class="panel active" id="panel-editor">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-      <div>
-        <div class="toolbar">
-          <button type="button" onclick="wrap('**','**')"><b>B</b></button>
-          <button type="button" onclick="wrap('*','*')"><i>I</i></button>
-          <button type="button" onclick="prefix('## ')">H2</button>
-          <button type="button" onclick="prefix('- ')">• List</button>
-          <button type="button" onclick="prefix('> ')">❝ Quote</button>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="flex-1 h-full overflow-y-auto bg-slate-50 dark:bg-slate-900 p-6 lg:p-10 relative">
+  
+  <!-- DASHBOARD TAB -->
+  <div id="tab-dashboard" class="tab-content block max-w-5xl mx-auto">
+    <h1 class="text-2xl font-bold mb-6 text-slate-900 dark:text-slate-100">Dashboard</h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+      <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="text-sm text-slate-500 mb-1">Total Artikel</div>
+        <div id="stat-total" class="text-3xl font-bold text-accent">-</div>
+      </div>
+      <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="text-sm text-slate-500 mb-1">Status GitHub</div>
+        <div id="gh-status" class="text-lg font-bold text-slate-700 dark:text-slate-300">Checking...</div>
+      </div>
+      <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="text-sm text-slate-500 mb-1">Terakhir Publish</div>
+        <div id="last-publish" class="text-lg font-bold text-slate-700 dark:text-slate-300">-</div>
+      </div>
+    </div>
+
+    <h2 class="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">Aksi Cepat</h2>
+    <div class="flex flex-wrap gap-3">
+      <button onclick="switchTab('new')" class="btn">✍️ Tulis Artikel Baru</button>
+      <button onclick="loadArticlesList()" class="btn btn-ghost">🔄 Refresh Data</button>
+      <a href="./" target="_blank" class="btn btn-ghost">🌐 Lihat Website</a>
+    </div>
+  </div>
+
+  <!-- EDITOR TAB -->
+  <div id="tab-new" class="tab-content hidden max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-5">
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Tulis Artikel Baru</h1>
+      <div class="flex gap-2">
+        <button onclick="generatePost()" class="btn btn-ghost">📦 Pratinjau JSON</button>
+        <button onclick="publishArticle()" id="btn-publish" class="btn">🚀 Publish ke GitHub</button>
+      </div>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Left: Editor -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+          <input id="title" type="text" placeholder="Judul Artikel..." class="w-full text-2xl font-bold bg-transparent border-none focus:outline-none text-slate-900 dark:text-slate-100 placeholder-slate-400 mb-2" oninput="updateSlug()">
+          <div class="flex items-center gap-2 text-sm text-slate-500">
+            <span>URL:</span>
+            <span id="slug-preview" class="font-mono bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded text-accent">/artikel-baru</span>
+          </div>
         </div>
-        <textarea id="content" class="form-textarea" placeholder="# Judul Artikel&#10;&#10;Tulis konten...&#10;&#10;## Apa itu SEO AI?&#10;Jawaban singkat..." oninput="renderPreview(); updateStats()"></textarea>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
-          <div class="stat"><b id="stat-words">0</b><span>Kata</span></div>
-          <div class="stat"><b id="stat-read">0</b><span>Menit</span></div>
-          <div class="stat"><b id="stat-faq">0</b><span>FAQ</span></div>
-          <div class="stat"><b id="stat-steps">0</b><span>Steps</span></div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-[600px]">
+          <div class="bg-slate-50 dark:bg-slate-900 p-2 border-b border-slate-200 dark:border-slate-700 flex gap-1 flex-wrap">
+            <button type="button" onclick="wrap('**','**')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100"><b>B</b></button>
+            <button type="button" onclick="wrap('*','*')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100"><i>I</i></button>
+            <button type="button" onclick="prefix('## ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">H2</button>
+            <button type="button" onclick="prefix('### ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">H3</button>
+            <button type="button" onclick="prefix('- ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">• List</button>
+            <button type="button" onclick="prefix('> ')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">❝ Quote</button>
+            <button type="button" onclick="insert('\n```\ncode\n```\n')" class="px-2 py-1 text-xs bg-white dark:bg-slate-800 border rounded hover:bg-slate-100">Code</button>
+          </div>
+          <div class="flex-1 flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-slate-200 dark:divide-slate-700">
+            <textarea id="content" class="flex-1 p-4 font-mono text-sm bg-transparent resize-none focus:outline-none" placeholder="# Tulis markdown di sini..." oninput="renderPreview(); updateStats()"></textarea>
+            <div id="preview" class="flex-1 p-4 overflow-y-auto article-content prose dark:prose-invert max-w-none"></div>
+          </div>
+          <div class="bg-slate-50 dark:bg-slate-900 p-2 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500 flex gap-4">
+            <span><b id="stat-words">0</b> kata</span>
+            <span><b id="stat-read">0</b> menit baca</span>
+            <span><b id="stat-faq">0</b> FAQ</span>
+          </div>
         </div>
       </div>
-      <div>
-        <label class="form-label">👁️ Preview</label>
-        <div class="preview article-content" id="preview"><p class="text-slate-500">Preview muncul di sini...</p></div>
+
+      <!-- Right: Metadata -->
+      <div class="space-y-4">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 space-y-4 shadow-sm">
+          <h3 class="font-bold border-b pb-2 mb-2 text-slate-900 dark:text-slate-100">SEO Meta</h3>
+          <div>
+            <label class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-400">Slug URL (Otomatis)</label>
+            <input id="slug" type="text" class="form-input font-mono text-xs" placeholder="judul-artikel" readonly>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-400">Meta Description</label>
+            <textarea id="description" class="form-input text-sm h-20 resize-none" placeholder="Deskripsi untuk Google..."></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-400">Tags (pisah koma)</label>
+            <input id="tags" type="text" class="form-input text-sm" placeholder="seo, tutorial">
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-400">Tanggal</label>
+              <input id="date" type="date" class="form-input text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1 text-slate-600 dark:text-slate-400">Author</label>
+              <input id="author" type="text" class="form-input text-sm" value="Admin">
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800 rounded-xl p-4">
+          <h3 class="font-bold text-violet-700 dark:text-violet-400 flex items-center gap-2 mb-2">
+            <span>🤖</span> AI SEO Ready
+          </h3>
+          <p class="text-xs text-violet-600 dark:text-violet-300 leading-relaxed">
+            Sistem akan otomatis mengekstrak FAQ (dari heading <code>## ?</code>) dan HowTo (dari heading <code>## 1.</code>) untuk schema JSON-LD.
+          </p>
+        </div>
       </div>
     </div>
   </div>
-  <div class="panel" id="panel-meta">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+  <!-- LIST TAB -->
+  <div id="tab-list" class="tab-content hidden max-w-5xl mx-auto">
+    <div class="flex justify-between items-center mb-5">
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Kelola Artikel</h1>
+      <button onclick="loadArticlesList()" class="btn btn-ghost text-sm">🔄 Refresh</button>
+    </div>
+    <div id="article-list" class="space-y-3">
+      <div class="text-slate-500 text-center py-10">Memuat data...</div>
+    </div>
+  </div>
+
+  <!-- SETTINGS TAB -->
+  <div id="tab-settings" class="tab-content hidden max-w-2xl mx-auto">
+    <h1 class="text-2xl font-bold mb-5 text-slate-900 dark:text-slate-100">Pengaturan GitHub</h1>
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-5">
+      <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-4 rounded-lg text-sm text-amber-700 dark:text-amber-400 mb-4">
+        <b>⚠️ Penting:</b> Token disimpan di <code>localStorage</code> browser Anda. Jangan gunakan di komputer publik.
+      </div>
+      
       <div>
-        <div class="mb-4"><label class="form-label">Slug URL</label><input id="slug" class="form-input" placeholder="tutorial-seo-2026"></div>
-        <div class="mb-4"><label class="form-label">Judul</label><input id="title" class="form-input" placeholder="Judul artikel"></div>
-        <div class="mb-4"><label class="form-label">Meta Description (120-160 char)</label><textarea id="description" class="form-textarea-sm" placeholder="Deskripsi SEO..."></textarea></div>
-        <div class="mb-4"><label class="form-label">AI Summary</label><textarea id="aiSummary" class="form-textarea-sm" placeholder="Ringkasan 1-2 kalimat untuk AI..."></textarea></div>
+        <label class="block font-semibold text-sm mb-1.5 text-slate-700 dark:text-slate-300">GitHub Username</label>
+        <input id="gh-user" type="text" class="form-input" value="2026deepsoe" placeholder="username">
       </div>
       <div>
-        <div class="mb-4"><label class="form-label">Tanggal</label><input id="date" type="date" class="form-input"></div>
-        <div class="mb-4"><label class="form-label">Penulis</label><input id="author" class="form-input" value="Admin"></div>
-        <div class="mb-4"><label class="form-label">Tags (pisah koma)</label><input id="tags" class="form-input" placeholder="seo, tutorial"></div>
-        <div class="mb-4"><label class="form-label">Kategori</label><input id="category" class="form-input" value="Tutorial"></div>
+        <label class="block font-semibold text-sm mb-1.5 text-slate-700 dark:text-slate-300">Repository Name</label>
+        <input id="gh-repo" type="text" class="form-input" value="soe" placeholder="nama-repo">
+      </div>
+      <div>
+        <label class="block font-semibold text-sm mb-1.5 text-slate-700 dark:text-slate-300">Branch</label>
+        <input id="gh-branch" type="text" class="form-input" value="main" placeholder="main">
+      </div>
+      <div>
+        <label class="block font-semibold text-sm mb-1.5 text-slate-700 dark:text-slate-300">Personal Access Token (PAT)</label>
+        <input id="gh-token" type="password" class="form-input" placeholder="ghp_xxxxxxxxxxxx">
+        <p class="text-xs text-slate-500 mt-1">Butuh scope: <code>repo</code> (atau fine-grained: Contents=Read&Write).</p>
+      </div>
+      
+      <div class="pt-4 border-t border-slate-200 dark:border-slate-700">
+        <button onclick="saveSettings()" class="btn w-full">💾 Simpan Pengaturan</button>
       </div>
     </div>
   </div>
-  <div class="panel" id="panel-output">
-    <div class="flex flex-wrap gap-2.5 mb-4">
-      <button class="btn" onclick="generatePost()">⚡ Generate JSON Artikel</button>
-      <button class="btn btn-ghost" onclick="generateManifest()">📋 Update index.json</button>
-      <button class="btn btn-ghost" onclick="generateLLMsTxt()">🤖 Generate llms.txt</button>
-    </div>
-    <div id="output" class="output" hidden></div>
-  </div>
+
 </main>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-lg shadow-xl transform translate-y-20 opacity-0 transition-all z-50 flex items-center gap-3">
+  <span id="toast-icon">✅</span>
+  <span id="toast-msg" class="text-sm font-medium">Berhasil!</span>
+</div>
+
 <script src="assets/markdown.js"></script>
 <script src="assets/ai-seo.js"></script>
 <script>
+// ================== STATE & INIT ==================
 const $ = id => document.getElementById(id);
-$('date').valueAsDate = new Date();
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab, .panel').forEach(el => el.classList.remove('active'));
-    tab.classList.add('active');
-    $('panel-' + tab.dataset.panel).classList.add('active');
-  });
+let currentTab = 'dashboard';
+let manifestData = [];
+
+// Load settings dari localStorage
+let settings = JSON.parse(localStorage.getItem('gh_settings')) || {
+  user: '2026deepsoe', repo: 'soe', branch: 'main', token: ''
+};
+
+// Init UI
+document.addEventListener('DOMContentLoaded', () => {
+  // Set tanggal hari ini
+  if ($('date')) $('date').valueAsDate = new Date();
+  
+  // Load settings ke form
+  $('gh-user').value = settings.user;
+  $('gh-repo').value = settings.repo;
+  $('gh-branch').value = settings.branch;
+  $('gh-token').value = settings.token;
+
+  // Update nav styles
+  updateNavStyles();
+  
+  // Cek koneksi jika token ada
+  if (settings.token) {
+    checkConnection();
+    loadArticlesList();
+  } else {
+    $('gh-status').textContent = 'Belum diatur';
+    $('gh-status').classList.add('text-amber-500');
+  }
 });
+
+// ================== NAVIGATION ==================
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+  $('tab-' + tab).classList.remove('hidden');
+  $('tab-' + tab).classList.add('block');
+  updateNavStyles();
+  
+  if (tab === 'list') loadArticlesList();
+}
+
+function updateNavStyles() {
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    const isActive = btn.getAttribute('onclick').includes(`'${currentTab}'`);
+    if (isActive) {
+      btn.classList.add('bg-accent', 'text-white', 'shadow-md');
+      btn.classList.remove('text-slate-600', 'hover:bg-slate-100', 'dark:text-slate-300', 'dark:hover:bg-slate-700');
+    } else {
+      btn.classList.remove('bg-accent', 'text-white', 'shadow-md');
+      btn.classList.add('text-slate-600', 'hover:bg-slate-100', 'dark:text-slate-300', 'dark:hover:bg-slate-700');
+    }
+  });
+}
+
+// ================== TOAST ==================
+function showToast(msg, type = 'success') {
+  const toast = $('toast');
+  const icon = $('toast-icon');
+  const msgEl = $('toast-msg');
+  
+  icon.textContent = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+  toast.style.background = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
+  msgEl.textContent = msg;
+  
+  toast.classList.remove('translate-y-20', 'opacity-0');
+  setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3500);
+}
+
+// ================== SETTINGS ==================
+function saveSettings() {
+  settings = {
+    user: $('gh-user').value.trim(),
+    repo: $('gh-repo').value.trim(),
+    branch: $('gh-branch').value.trim(),
+    token: $('gh-token').value.trim()
+  };
+  localStorage.setItem('gh_settings', JSON.stringify(settings));
+  showToast('Pengaturan disimpan!');
+  checkConnection();
+}
+
+async function checkConnection() {
+  if (!settings.token) return;
+  const el = $('gh-status');
+  el.textContent = 'Menghubungkan...';
+  el.className = 'text-lg font-bold text-amber-500';
+  
+  try {
+    const res = await fetch(`https://api.github.com/repos/${settings.user}/${settings.repo}`, {
+      headers: { 'Authorization': `Bearer ${settings.token}` }
+    });
+    if (res.ok) {
+      el.textContent = '✅ Terhubung';
+      el.className = 'text-lg font-bold text-green-500';
+      $('connection-status').innerHTML = `<span class="w-2 h-2 rounded-full bg-green-500"></span> Terhubung ke ${settings.user}/${settings.repo}`;
+    } else {
+      throw new Error('Token invalid');
+    }
+  } catch (e) {
+    el.textContent = '❌ Gagal';
+    el.className = 'text-lg font-bold text-red-500';
+    $('connection-status').innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500"></span> Gagal terhubung`;
+  }
+}
+
+// ================== GITHUB API HELPERS ==================
+async function ghRequest(path, method = 'GET', body = null) {
+  const url = `https://api.github.com/repos/${settings.user}/${settings.repo}/contents/${path}`;
+  const headers = {
+    'Authorization': `Bearer ${settings.token}`,
+    'Accept': 'application/vnd.github.v3+json'
+  };
+  
+  const opts = { method, headers };
+  if (body) {
+    opts.body = JSON.stringify({
+      message: body.message || `Update ${path}`,
+      content: btoa(unescape(encodeURIComponent(body.content))),
+      sha: body.sha,
+      branch: settings.branch
+    });
+  }
+  
+  const res = await fetch(url, opts);
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || 'GitHub API Error');
+  }
+  return res.json();
+}
+
+async function ghGetFile(path) {
+  try {
+    const res = await fetch(`https://api.github.com/repos/${settings.user}/${settings.repo}/contents/${path}?ref=${settings.branch}`, {
+      headers: { 'Authorization': `Bearer ${settings.token}` }
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    // Decode base64 Unicode-safe
+    const content = decodeURIComponent(escape(atob(data.content)));
+    return { sha: data.sha, content };
+  } catch (e) { return null; }
+}
+
+// ================== LIST ARTIKEL ==================
+async function loadArticlesList() {
+  const list = $('article-list');
+  if (!settings.token) {
+    list.innerHTML = `<div class="bg-amber-50 text-amber-700 p-4 rounded-lg text-center">Atur GitHub Token di menu Pengaturan terlebih dahulu.</div>`;
+    return;
+  }
+  
+  list.innerHTML = `<div class="text-slate-500 text-center py-10 animate-pulse">Memuat data dari GitHub...</div>`;
+  
+  try {
+    const file = await ghGetFile('posts/index.json');
+    if (!file) throw new Error('index.json tidak ditemukan');
+    
+    manifestData = JSON.parse(file.content);
+    $('stat-total').textContent = manifestData.length;
+    if (manifestData.length > 0) {
+      const latest = manifestData.sort((a,b) => new Date(b.date) - new Date(a.date))[0];
+      $('last-publish').textContent = latest ? latest.title.substring(0, 20) + '...' : '-';
+    }
+    
+    // Render list
+    if (manifestData.length === 0) {
+      list.innerHTML = `<div class="bg-white dark:bg-slate-800 rounded-xl p-10 text-center text-slate-500">Belum ada artikel.</div>`;
+      return;
+    }
+    
+    list.innerHTML = manifestData.map(p => `
+      <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between hover:border-accent transition group">
+        <div class="flex-1">
+          <h3 class="font-bold text-lg text-slate-900 dark:text-slate-100 mb-1">${p.title}</h3>
+          <div class="text-sm text-slate-500 flex gap-3">
+            <span>📅 ${p.date}</span>
+            <span>⏱️ ${p.readingTime || 0} menit</span>
+            <span class="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1.5 rounded text-accent">${p.slug}</span>
+          </div>
+        </div>
+        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition">
+          <a href="post.html?slug=${p.slug}" target="_blank" class="p-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg" title="Lihat">👁️</a>
+          <button onclick="deleteArticle('${p.slug}')" class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg" title="Hapus">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+    
+  } catch (e) {
+    list.innerHTML = `<div class="bg-red-50 text-red-600 p-4 rounded-lg">Error: ${e.message}</div>`;
+  }
+}
+
+// ================== PUBLISH ==================
+async function publishArticle() {
+  if (!settings.token) return showToast('Atur GitHub Token dulu di Pengaturan!', 'error');
+  
+  const p = gather();
+  if (!p.title || !p.content) return showToast('Judul dan konten wajib diisi!', 'error');
+  
+  const btn = $('btn-publish');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Publishing...';
+  
+  try {
+    // 1. Buat file posts/slug.json
+    const existing = await ghGetFile(`posts/${p.slug}.json`);
+    await ghRequest(`posts/${p.slug}.json`, 'PUT', {
+      content: JSON.stringify(p, null, 2),
+      sha: existing ? existing.sha : undefined,
+      message: `post: add "${p.title}"`
+    });
+    
+    // 2. Update posts/index.json
+    const idxFile = await ghGetFile('posts/index.json');
+    let index = idxFile ? JSON.parse(idxFile.content) : [];
+    index = index.filter(x => x.slug !== p.slug); // hapus duplikat
+    index.push({
+      slug: p.slug, title: p.title, description: p.description,
+      aiSummary: p.aiSummary, date: p.date, author: p.author,
+      tags: p.tags, category: p.category, readingTime: p.readingTime
+    });
+    await ghRequest('posts/index.json', 'PUT', {
+      content: JSON.stringify(index, null, 2),
+      sha: idxFile ? idxFile.sha : undefined,
+      message: `index: update (${index.length} artikel)`
+    });
+    
+    // 3. Update llms.txt (append) - Opsional
+    try {
+      const llms = await ghGetFile('llms.txt');
+      if (llms) {
+        let newContent = llms.content;
+        const entry = `- [${p.title}](https://${settings.user}.github.io/${settings.repo}/post.html?slug=${p.slug}): ${p.aiSummary}\n`;
+        if (!newContent.includes(p.slug)) {
+          newContent = newContent.replace('## Articles\n', `## Articles\n${entry}`);
+          await ghRequest('llms.txt', 'PUT', { content: newContent, sha: llms.sha, message: 'llms: update' });
+        }
+      }
+    } catch (e) { console.warn('Skip llms update:', e.message); }
+    
+    // 4. Update sitemap.xml (append) - Opsional
+    try {
+      const sitemap = await ghGetFile('sitemap.xml');
+      if (sitemap) {
+        let newContent = sitemap.content;
+        const entry = `  <url><loc>https://${settings.user}.github.io/${settings.repo}/post.html?slug=${p.slug}</loc><lastmod>${p.date}</lastmod><priority>0.8</priority></url>\n`;
+        if (!newContent.includes(p.slug)) {
+          newContent = newContent.replace('</urlset>', `${entry}</urlset>`);
+          await ghRequest('sitemap.xml', 'PUT', { content: newContent, sha: sitemap.sha, message: 'sitemap: update' });
+        }
+      }
+    } catch (e) { console.warn('Skip sitemap update:', e.message); }
+    
+    showToast(`🚀 "${p.title}" berhasil dipublish! Website update dalam 30 detik.`);
+    
+    // Reset form
+    resetForm();
+    loadArticlesList();
+    switchTab('list');
+    
+  } catch (e) {
+    showToast('Gagal publish: ' + e.message, 'error');
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🚀 Publish ke GitHub';
+  }
+}
+
+// ================== DELETE ==================
+async function deleteArticle(slug) {
+  if (!confirm(`Yakin mau hapus artikel "${slug}"?`)) return;
+  
+  try {
+    // 1. Hapus file artikel
+    const file = await ghGetFile(`posts/${slug}.json`);
+    if (!file) throw new Error('File tidak ditemukan');
+    
+    await fetch(`https://api.github.com/repos/${settings.user}/${settings.repo}/contents/posts/${slug}.json`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${settings.token}` },
+      body: JSON.stringify({ message: `delete: ${slug}`, sha: file.sha, branch: settings.branch })
+    });
+    
+    // 2. Update index.json
+    const idxFile = await ghGetFile('posts/index.json');
+    const index = JSON.parse(idxFile.content).filter(x => x.slug !== slug);
+    await ghRequest('posts/index.json', 'PUT', {
+      content: JSON.stringify(index, null, 2),
+      sha: idxFile.sha,
+      message: `index: remove "${slug}"`
+    });
+    
+    showToast(`🗑️ Artikel "${slug}" dihapus`);
+    loadArticlesList();
+  } catch (e) {
+    showToast('Gagal hapus: ' + e.message, 'error');
+  }
+}
+
+// ================== FORM UTILS ==================
+function updateSlug() {
+  const title = $('title').value;
+  const slug = title.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+  $('slug').value = slug;
+  $('slug-preview').textContent = '/' + (slug || 'judul-artikel');
+}
+
+function gather() {
+  const md = $('content').value;
+  return {
+    slug: $('slug').value, title: $('title').value, description: $('description').value,
+    aiSummary: AISEO.summary(md), date: $('date').value, updated: $('date').value,
+    author: $('author').value, tags: $('tags').value.split(',').map(t => t.trim()).filter(Boolean),
+    category: 'Umum', lang: 'id-ID', content: md,
+    faqs: AISEO.extractFAQs(md), steps: AISEO.extractSteps(md),
+    readingTime: AISEO.readingTime(md), wordCount: AISEO.stripMd(md).split(/\s+/).filter(Boolean).length
+  };
+}
+
+function resetForm() {
+  $('title').value = ''; $('slug').value = ''; $('slug-preview').textContent = '/artikel-baru';
+  $('content').value = ''; $('description').value = ''; $('tags').value = '';
+  $('preview').innerHTML = ''; updateStats();
+}
+
 function wrap(before, after) {
   const ta = $('content'), s = ta.selectionStart, e = ta.selectionEnd;
   const sel = ta.value.slice(s, e) || 'teks';
@@ -96,40 +554,25 @@ function prefix(p) {
   ta.value = ta.value.slice(0, lineStart) + p + ta.value.slice(lineStart);
   ta.focus(); renderPreview(); updateStats();
 }
+function insert(text) {
+  const ta = $('content'), s = ta.selectionStart;
+  ta.value = ta.value.slice(0, s) + text + ta.value.slice(ta.selectionEnd);
+  ta.focus(); renderPreview(); updateStats();
+}
 function renderPreview() {
-  $('preview').innerHTML = MD.parse($('content').value) || '<p class="text-slate-500">Preview muncul di sini...</p>';
+  $('preview').innerHTML = MD.parse($('content').value) || '<p class="text-slate-400">Preview muncul di sini...</p>';
 }
 function updateStats() {
   const md = $('content').value;
   $('stat-words').textContent = AISEO.stripMd(md).split(/\s+/).filter(Boolean).length;
   $('stat-read').textContent = AISEO.readingTime(md);
   $('stat-faq').textContent = AISEO.extractFAQs(md).length;
-  $('stat-steps').textContent = (AISEO.extractSteps(md) || []).length;
 }
-function showOutput(label, content) {
-  const out = $('output'); out.hidden = false;
-  out.textContent = `// ${label}\n\n${content}`;
-  if (!out.querySelector('.copy-btn')) {
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-ghost copy-btn'; btn.textContent = '📋 Copy';
-    btn.onclick = () => { navigator.clipboard.writeText(out.textContent.replace(/^\/\/.*\n\n/, '')); btn.textContent = '✅ Copied!'; setTimeout(() => btn.textContent = '📋 Copy', 1500); };
-    out.appendChild(btn);
-  }
+function generatePost() {
+  const p = gather();
+  alert('JSON siap (bisa di-copy dari console):\n\n' + JSON.stringify(p, null, 2));
+  console.log(p);
 }
-function gather() {
-  const md = $('content').value;
-  return {
-    slug: $('slug').value || 'untitled', title: $('title').value || 'Tanpa Judul', description: $('description').value,
-    aiSummary: $('aiSummary').value || AISEO.summary(md), date: $('date').value, updated: $('date').value,
-    author: $('author').value, tags: $('tags').value.split(',').map(t => t.trim()).filter(Boolean),
-    category: $('category').value, lang: 'id-ID', content: md,
-    faqs: AISEO.extractFAQs(md), steps: AISEO.extractSteps(md),
-    readingTime: AISEO.readingTime(md), wordCount: AISEO.stripMd(md).split(/\s+/).filter(Boolean).length
-  };
-}
-function generatePost() { showOutput(`Simpan sebagai: posts/${gather().slug}.json`, JSON.stringify(gather(), null, 2)); }
-function generateManifest() { const p = gather(); showOutput('Update posts/index.json', JSON.stringify({ slug: p.slug, title: p.title, description: p.description, aiSummary: p.aiSummary, date: p.date, author: p.author, tags: p.tags, category: p.category, readingTime: p.readingTime }, null, 2)); }
-function generateLLMsTxt() { const p = gather(); showOutput('Tambahkan ke llms.txt', `- [${p.title}](https://2026deepsoe.github.io/soe/post.html?slug=${p.slug}): ${p.aiSummary}\n`); }
 </script>
 </body>
 </html>
