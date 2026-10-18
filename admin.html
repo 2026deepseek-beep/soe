@@ -38,9 +38,6 @@
     <button onclick="switchTab('pages')" class="nav-btn w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors text-amber-600 dark:text-amber-500">
       <span>📄</span> Halaman Statis
     </button>
-    <button onclick="switchTab('adsense')" class="nav-btn w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors text-green-600 dark:text-green-500">
-      <span>💰</span> AdSense Setup
-    </button>
     <button onclick="switchTab('settings')" class="nav-btn w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors">
       <span>⚙️</span> Pengaturan
     </button>
@@ -80,7 +77,6 @@
     <div class="flex flex-wrap gap-3">
       <button onclick="switchTab('new')" class="btn">✍️ Tulis Artikel Baru</button>
       <button onclick="switchTab('pages')" class="btn btn-ghost">📄 Kelola Halaman</button>
-      <button onclick="switchTab('adsense')" class="btn btn-ghost">💰 Setup AdSense</button>
       <button onclick="loadArticlesList()" class="btn btn-ghost">🔄 Refresh Data</button>
       <a href="./" target="_blank" class="btn btn-ghost">🌐 Lihat Website</a>
     </div>
@@ -195,8 +191,8 @@
 
   <!-- PAGES -->
   <div id="tab-pages" class="tab-content max-w-5xl mx-auto">
-    <h1 class="text-2xl font-bold mb-2 text-slate-900 dark:text-slate-100">Halaman Statis (AdSense Ready)</h1>
-    <p class="text-sm text-slate-500 mb-5">Buat halaman syarat AdSense: About, Contact, Privacy Policy, Disclaimer.</p>
+    <h1 class="text-2xl font-bold mb-2 text-slate-900 dark:text-slate-100">Halaman Statis</h1>
+    <p class="text-sm text-slate-500 mb-5">Buat halaman statis: About, Contact, Privacy Policy, Disclaimer.</p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="md:col-span-2 space-y-4">
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
@@ -240,23 +236,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- ADSENSE -->
-  <div id="tab-adsense" class="tab-content max-w-3xl mx-auto">
-    <h1 class="text-2xl font-bold mb-5 text-slate-900 dark:text-slate-100">💰 AdSense Setup</h1>
-    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-5">
-      <p class="text-sm text-slate-500 mb-4">Simpan kode script AdSense Anda di sini.</p>
-      <div>
-        <label class="block font-semibold text-sm mb-1.5">Google AdSense Client ID</label>
-        <input id="adsense-id" type="text" class="form-input font-mono" placeholder="ca-pub-XXXXXXXXXXXXXXXX">
-      </div>
-      <div>
-        <label class="block font-semibold text-sm mb-1.5">Auto Ads Script (Opsional)</label>
-        <textarea id="adsense-script" class="form-input font-mono text-xs h-32" placeholder='<script async src="..."></script>'></textarea>
-      </div>
-      <button onclick="saveAdSense()" id="btn-adsense" class="btn w-full">💾 Simpan & Terapkan Kode</button>
     </div>
   </div>
 
@@ -332,9 +311,6 @@ document.addEventListener('DOMContentLoaded', () => {
   $('gh-token').value = settings.ghToken;
   $('openai-key').value = settings.openaiKey;
   $('openai-model').value = settings.openaiModel;
-  
-  $('adsense-id').value = localStorage.getItem('adsense_id') || '';
-  $('adsense-script').value = localStorage.getItem('adsense_script') || '';
 
   updateNavStyles();
   
@@ -387,7 +363,6 @@ function updateNavStyles() {
     } else {
       btn.classList.add('text-slate-600', 'hover:bg-slate-100', 'dark:text-slate-300', 'dark:hover:bg-slate-700');
       if (btn.getAttribute('onclick').includes('pages')) btn.classList.add('text-amber-600', 'dark:text-amber-500');
-      if (btn.getAttribute('onclick').includes('adsense')) btn.classList.add('text-green-600', 'dark:text-green-500');
     }
   });
 }
@@ -481,10 +456,6 @@ function generateStaticHTML(post, type = 'post') {
   const desc = (post.description || '').replace(/"/g, '&quot;');
   const baseUrl = `https://${settings.ghUser}.github.io/${settings.ghRepo}`;
   const canonical = `${baseUrl}/${isPage ? 'halaman' : 'artikel'}/${post.slug}/`;
-  const adsenseId = localStorage.getItem('adsense_id');
-  const adsenseScript = adsenseId 
-    ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}" crossorigin="anonymous"></scr` + `ipt>` 
-    : '';
 
   const schema = isPage ? {
     "@context": "https://schema.org", "@type": "WebPage",
@@ -507,7 +478,6 @@ function generateStaticHTML(post, type = 'post') {
 <meta name="twitter:card" content="summary_large_image">
 ${!isPage ? `<link rel="alternate" hreflang="${post.lang || 'id-ID'}" href="${canonical}">` : ''}
 <link rel="stylesheet" href="${baseUrl}/assets/style.css">
-${adsenseScript}
 <script type="application/ld+json">${JSON.stringify(schema)}</script>
 </head>
 <body>
@@ -931,7 +901,7 @@ function loadTemplate(type) {
     privacy: {
       title: "Kebijakan Privasi",
       desc: "Kebijakan privasi Blog Soe terkait penggunaan data pengunjung dan cookie.",
-      content: `# Kebijakan Privasi\n\nDi Blog Soe, aksesibilitas di https://2026deepsoe.github.io/soe/ adalah prioritas utama kami. Dokumen Kebijakan Privasi ini berisi jenis informasi yang dikumpulkan dan dicatat oleh Blog Soe dan bagaimana kami menggunakannya.\n\n## Log Files\n\nBlog Soe menggunakan file log standar. File-file ini mencatat pengunjung saat mereka mengunjungi situs web. Informasi yang dikumpulkan termasuk alamat protokol internet (IP), jenis browser, penyedia layanan internet (ISP), stempel tanggal dan waktu, halaman rujukan/keluar, dan mungkin jumlah klik.\n\n## Cookies dan Web Beacons\n\nSeperti situs web lainnya, Blog Soe menggunakan 'cookie'. Cookie ini digunakan untuk menyimpan informasi termasuk preferensi pengunjung, dan halaman mana yang diakses atau dikunjungi pengunjung.\n\n## Google DoubleClick DART Cookie\n\nGoogle adalah salah satu vendor pihak ketiga di situs kami. Ia juga menggunakan cookie, yang dikenal sebagai cookie DART, untuk menayangkan iklan kepada pengunjung situs kami berdasarkan kunjungan mereka ke www.website.com dan situs lain di internet.\n\n## Persetujuan\n\nDengan menggunakan situs web kami, Anda dengan ini menyetujui kebijakan privasi kami dan menyetujui persyaratannya.`
+      content: `# Kebijakan Privasi\n\nDi Blog Soe, aksesibilitas di https://2026deepsoe.github.io/soe/ adalah prioritas utama kami. Dokumen Kebijakan Privasi ini berisi jenis informasi yang dikumpulkan dan dicatat oleh Blog Soe dan bagaimana kami menggunakannya.\n\n## Log Files\n\nBlog Soe menggunakan file log standar. File-file ini mencatat pengunjung saat mereka mengunjungi situs web. Informasi yang dikumpulkan termasuk alamat protokol internet (IP), jenis browser, penyedia layanan internet (ISP), stempel tanggal dan waktu, halaman rujukan/keluar, dan mungkin jumlah klik.\n\n## Cookies dan Web Beacons\n\nSeperti situs web lainnya, Blog Soe menggunakan 'cookie'. Cookie ini digunakan untuk menyimpan informasi termasuk preferensi pengunjung, dan halaman mana yang diakses atau dikunjungi pengunjung.\n\n## Persetujuan\n\nDengan menggunakan situs web kami, Anda dengan ini menyetujui kebijakan privasi kami dan menyetujui persyaratannya.`
     },
     disclaimer: {
       title: "Disclaimer",
@@ -1024,48 +994,6 @@ async function publishPage() {
     showToast('Gagal publish: ' + e.message, 'error');
   } finally {
     btn.disabled = false; btn.innerHTML = '🚀 Publish Halaman';
-  }
-}
-
-async function saveAdSense() {
-  const clientId = $('adsense-id').value.trim();
-  const customScript = $('adsense-script').value.trim();
-  
-  if (!clientId) return showToast('Client ID AdSense wajib diisi', 'error');
-  if (!settings.ghToken) return showToast('Atur GitHub Token dulu!', 'error');
-  
-  const btn = $('btn-adsense');
-  btn.disabled = true; btn.innerHTML = '⏳ Menerapkan...';
-  
-  const adsenseTag = customScript || `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${clientId}" crossorigin="anonymous"></scr` + `ipt>`;
-  
-  const filesToUpdate = ['index.html', 'post.html', 'page.html'];
-  
-  try {
-    for (const file of filesToUpdate) {
-      const ghFile = await ghGetFile(file);
-      if (!ghFile) continue;
-      
-      let content = ghFile.content;
-      content = content.replace(/<script async src="https:\/\/pagead2\.googlesyndication\.com[^>]+><\/script>/gi, '');
-      
-      if (content.includes('</head>')) {
-        content = content.replace('</head>', `\n<!-- Google AdSense -->\n${adsenseTag}\n</head>`);
-        await ghRequest(file, 'PUT', {
-          content: content,
-          sha: ghFile.sha,
-          message: `adsense: inject to ${file}`
-        });
-      }
-    }
-    
-    localStorage.setItem('adsense_id', clientId);
-    localStorage.setItem('adsense_script', customScript);
-    showToast('✅ AdSense berhasil diterapkan!');
-  } catch (e) {
-    showToast('Gagal: ' + e.message, 'error');
-  } finally {
-    btn.disabled = false; btn.innerHTML = '💾 Simpan & Terapkan Kode';
   }
 }
 
